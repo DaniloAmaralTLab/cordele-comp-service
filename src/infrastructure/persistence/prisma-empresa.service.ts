@@ -4,19 +4,19 @@ import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '../prisma-client';
 
 /**
- * Tenant routing service for COMP — one PrismaClient per schema (D-619).
+ * Tenant routing service for COMP — one PrismaClient per schema.
  *
  * Implements schema-per-tenant by building a dedicated `PrismaClient` for each
  * empresa schema (`emp_<slug>`), caching it by schema name. This bypasses the
  * Prisma `search_path` limitation: Prisma qualifies every query with the schema
  * embedded in `DATABASE_URL` at connection time, so `SET search_path` changes
  * at query level are silently ignored by the generated client. A per-schema
- * client with its own `datasourceUrl` is the correct approach (D-619).
+ * client with its own `datasourceUrl` is the correct approach.
  *
  * Security: slug is validated with `[a-z][a-z0-9_]{1,30}` before interpolation.
  * An invalid slug causes an immediate Error (never reaches Postgres).
  *
- * RULE-07: no COMP data access bypasses this service.
+ * No COMP data access bypasses this service.
  *
  * Usage (repositories):
  * ```ts
@@ -32,7 +32,7 @@ export class PrismaEmpresaService implements OnModuleDestroy {
   /**
    * AsyncLocalStorage for the current empresa slug.
    *
-   * Populated by EmpresaContextMiddleware (P5) from the JWT claim `empresa_id`.
+   * Populated by EmpresaContextMiddleware from the JWT claim `empresa_id`.
    * In unit/integration tests, call `PrismaEmpresaService.runWithSlug(slug, fn)`
    * to scope a test block to a specific tenant.
    */
@@ -42,7 +42,7 @@ export class PrismaEmpresaService implements OnModuleDestroy {
   private readonly clientsBySchema = new Map<string, PrismaClient>();
 
   // ---------------------------------------------------------------------------
-  // Static context API (used by middleware in P5 and tests)
+  // Static context API (used by the middleware and by tests)
   // ---------------------------------------------------------------------------
 
   /**
@@ -68,7 +68,7 @@ export class PrismaEmpresaService implements OnModuleDestroy {
    *
    * Called by `JwtAuthGuard.canActivate()` AFTER successful JWT signature
    * verification so the slug comes from a cryptographically verified source.
-   * RULE-07: the schema routing slug must be set from the authenticated principal,
+   * The schema routing slug must be set from the authenticated principal,
    * never from an unverified token decoded before the guard runs.
    *
    * Validates slug before entering the context to fail fast on misconfiguration.
@@ -86,12 +86,12 @@ export class PrismaEmpresaService implements OnModuleDestroy {
   /**
    * Executes `fn` with a Prisma client scoped to the current empresa schema.
    *
-   * Reads the slug from the AsyncLocalStorage set by the middleware (P5).
+   * Reads the slug from the AsyncLocalStorage set by the middleware.
    * Throws when called outside a request context (slug not set).
    *
    * The callback receives a `PrismaClient` directly (not a transaction proxy) so
    * repositories can open their own `$transaction` when atomicity is needed
-   * (RULE-03: transactions opened in the application service or in the adapter
+   * (transactions opened in the application service or in the adapter
    * when atomicity is local to the adapter — e.g., `replaceOverrides`).
    */
   async withCurrentTenant<T>(fn: (client: PrismaClient) => Promise<T>): Promise<T> {
@@ -99,7 +99,7 @@ export class PrismaEmpresaService implements OnModuleDestroy {
     if (!slug) {
       throw new Error(
         'PrismaEmpresaService: empresa context is not set. ' +
-        'Ensure EmpresaContextMiddleware is active (P5) or call runWithSlug in tests.',
+        'Ensure EmpresaContextMiddleware is active or call runWithSlug in tests.',
       );
     }
     return this.withSlug(slug, fn);

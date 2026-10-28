@@ -2,9 +2,9 @@
  * Inbound port for batch project metadata queries (exported by CompModule).
  *
  * Used by PUB (ePub assembly) and PROJ (metadata lookup) to fetch metadata for
- * one or more projects in a single query. Exposed in-process — no HTTP call.
+ * one or more projects in a single query.
  *
- * Pure TypeScript interface — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript interface — no @nestjs/* or @prisma/client imports.
  * The injection token is declared in comp.tokens.ts (COMP_PROJECT_METADATA_PORT).
  */
 
@@ -22,7 +22,7 @@ export interface MetadadosDto {
   readonly idioma: string;
   readonly isbn: string | null;
   readonly capaUrl: string | null;
-  /** false when no row exists (lazy default D-M); true when persisted at least once. */
+  /** false when no row exists (lazy default); true when persisted at least once. */
   readonly materialized: boolean;
 }
 
@@ -34,11 +34,11 @@ export interface ProjectMetadataPort {
    * query — never a loop of findUnique (no N+1).
    *
    * Missing projects (no row in DB) are absent from the returned Map. Callers
-   * should treat absence as `materialized=false`, consistent with D-M lazy default.
+   * should treat absence as `materialized=false`, consistent with the lazy default.
    *
    * Multi-empresa: schema routing is handled by PrismaEmpresaService via the
    * current empresa context (AsyncLocalStorage). Callers must be executing in
-   * a request context where EmpresaContext is set (RULE-07).
+   * a request context where EmpresaContext is set.
    *
    * @param projetoIds  UUIDs of the projects to fetch.
    * @returns           Map keyed by projetoId; missing keys = not found.

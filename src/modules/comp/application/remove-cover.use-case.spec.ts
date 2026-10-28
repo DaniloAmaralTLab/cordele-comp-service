@@ -5,7 +5,7 @@ import type { FileStoragePort } from '../ports/file-storage.port';
 import type { DomainEventEmitter } from '../ports/domain-event-emitter.port';
 
 /**
- * Unit spec for RemoveCoverUseCase (COMP-005).
+ * Unit spec for RemoveCoverUseCase.
  *
  * All ports are mocked with jest.fn() — no disk, no DB, no Nest.
  *
@@ -97,7 +97,7 @@ describe('RemoveCoverUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Idempotency — no row (COMP-005 acceptance criterion)
+  // Idempotency — no row
   // ---------------------------------------------------------------------------
 
   it('is a no-op when no Metadados row exists (idempotent)', async () => {

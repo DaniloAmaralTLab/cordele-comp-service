@@ -4,10 +4,10 @@ import { PrismaClient } from '../prisma-client';
 /**
  * Base PrismaClient for process-global operations (health, migrations check).
  *
- * **Tenant data access (P3+):** do NOT use this service directly for COMP domain
+ * **Tenant data access:** do NOT use this service directly for COMP domain
  * queries. Use `PrismaEmpresaService` instead — it creates one dedicated
  * `PrismaClient` per tenant schema (`emp_<slug>`) and routes every query to the
- * correct schema (D-619). Using `PrismaService` for tenant queries is a data
+ * correct schema. Using `PrismaService` for tenant queries is a data
  * isolation bug: it connects to the default schema in `DATABASE_URL` and ignores
  * the `SET search_path` Prisma-level limitation.
  *

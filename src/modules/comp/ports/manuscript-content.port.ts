@@ -1,6 +1,6 @@
 /**
  * A single node in the manuscript content tree (IMP representation, read-only).
- * COMP never writes to this structure (ADR-002).
+ * COMP never writes to this structure.
  */
 export interface ContentNode {
   readonly nodeId: string;
@@ -12,7 +12,7 @@ export interface ContentNode {
  * Read-only content tree for a project's manuscript.
  * Returned by ManuscriptContentPort.getContentTree.
  *
- * Matches api-contract §6.4 / integration-contracts §2.1.
+ * Matches api-contract §6.4 / .
  */
 export interface ContentTreeDto {
   readonly manuscritoId: string;
@@ -22,7 +22,7 @@ export interface ContentTreeDto {
 /**
  * Outbound port for reading the manuscript content tree (read-only IMP boundary).
  *
- * COMP uses this to validate override node references (D-K):
+ * COMP uses this to validate override node references:
  *   - UpdateLayoutUseCase: validates that each override's referenciaNo exists;
  *     marks stale those that don't.
  *   - GetLayoutPreviewUseCase: returns 409 when tree is null; validates existing
@@ -31,10 +31,10 @@ export interface ContentTreeDto {
  * The port returns null when no manuscript exists for the project yet.
  * Callers must handle null (no manuscript → stale/error depending on use case).
  *
- * Concrete adapter: stub in P4 (ManuscriptContentStubAdapter); real in-process IMP
- * adapter in INT-COMP-001 (conditional on IMP scaffold).
+ * Current adapter: ManuscriptContentStubAdapter (stub used while there is no
+ * integration with the import service).
  *
- * Pure TypeScript interface — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript interface — no @nestjs/* or @prisma/client imports.
  */
 export interface ManuscriptContentPort {
   /**
@@ -45,7 +45,7 @@ export interface ManuscriptContentPort {
 
   /**
    * Returns true when the manuscript node identified by referenciaNo exists in the
-   * current content tree; false when the node is absent (stale override, D-K).
+   * current content tree; false when the node is absent (stale override).
    * Never throws for a missing node — callers handle false by marking the override stale.
    */
   nodeExists(projetoId: string, referenciaNo: string): Promise<boolean>;

@@ -43,10 +43,9 @@ const CORRELATION_HEADER = 'x-correlation-id' as const;
  * Registered via `APP_FILTER` in `CompModule` so it applies globally to all
  * COMP routes.
  *
- * RULE-08: no console.log — uses Nest Logger.
+ * No console.log — uses Nest Logger.
  *
  * @see src/infrastructure/comp/middleware/correlation.middleware.ts
- * @see docs/architecture/backend/issues/COMP-018.md
  */
 @Catch()
 export class ProblemJsonFilter implements ExceptionFilter {
@@ -77,7 +76,7 @@ export class ProblemJsonFilter implements ExceptionFilter {
       exception instanceof ForbiddenException
     ) {
       // Explicit mapping for the most common HTTP exceptions so the filter
-      // is self-documenting (COMP-018 requirement).
+      // is self-documenting.
       status = exception.getStatus();
       type = `urn:ietf:rfc:9110:${status}`;
       title = exception.name;

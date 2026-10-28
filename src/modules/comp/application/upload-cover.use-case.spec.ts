@@ -6,7 +6,7 @@ import type { FileStoragePort } from '../ports/file-storage.port';
 import type { DomainEventEmitter } from '../ports/domain-event-emitter.port';
 
 /**
- * Unit spec for UploadCoverUseCase (COMP-005).
+ * Unit spec for UploadCoverUseCase.
  *
  * All ports are mocked with jest.fn() — no disk, no DB, no Nest.
  *
@@ -81,7 +81,7 @@ describe('UploadCoverUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // MIME validation (COMP-005 / SPEC-02 — 415)
+  // MIME validation
   // ---------------------------------------------------------------------------
 
   it('rejects image/gif with DomainException status=415', async () => {
@@ -119,7 +119,7 @@ describe('UploadCoverUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Size validation (COMP-005 / SPEC-02 — 413)
+  // Size validation
   // ---------------------------------------------------------------------------
 
   it('rejects files larger than COMP_COVER_MAX_BYTES with DomainException status=413', async () => {
@@ -217,7 +217,7 @@ describe('UploadCoverUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Materializes Metadados if absent (COMP-005 acceptance criterion)
+  // Materializes Metadados if absent
   // ---------------------------------------------------------------------------
 
   it('materializes Metadados when no row exists before upload', async () => {
@@ -238,7 +238,7 @@ describe('UploadCoverUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Event emission (COMP-005 / COMP-004 post-persist event)
+  // Event emission
   // ---------------------------------------------------------------------------
 
   it('emits MetadataUpdated after successful upload', async () => {
@@ -272,7 +272,7 @@ describe('UploadCoverUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Metrics on success (COMP-019)
+  // Metrics on success
   // ---------------------------------------------------------------------------
 
   it('increments comp_cover_upload_total on successful upload', async () => {

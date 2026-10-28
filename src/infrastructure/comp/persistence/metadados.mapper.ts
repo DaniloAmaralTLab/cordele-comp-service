@@ -8,7 +8,7 @@ import { MetadadosEntity, type Idioma } from '../../../domain/comp/metadados.agg
  * `MetadadosEntity` is a backward-compatible alias for `Metadados` exported by the aggregate.
  * This is the only file in infrastructure/comp/persistence that knows both shapes.
  *
- * RULE-01: Metadados aggregate does not import @prisma/client — the mapper is the bridge.
+ * Metadados aggregate does not import @prisma/client — the mapper is the bridge.
  */
 export class MetadadosMapper {
   /**
@@ -31,7 +31,7 @@ export class MetadadosMapper {
       atualizadoEm: model.atualizadoEm,
       empresaSlug,
       // Read from DB column (added in migration 20260830000001_metadados_materialized).
-      // false = lazy-default (cover-only row, no PUT /metadados yet); true = metadata saved (D-M).
+      // false = lazy-default (cover-only row, no PUT /metadados yet); true = metadata saved.
       materialized: model.materialized,
     });
   }

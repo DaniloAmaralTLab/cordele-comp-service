@@ -28,7 +28,7 @@ export interface LayoutOverrideRead {
  *
  * Excludes `materialized` and `stale` per §6.5 — PUB only reads honoured parameters.
  *
- * RULE-04: defined in modules/ — not a Prisma model.
+ * Defined in modules/ — not a Prisma model.
  */
 export interface LayoutRead {
   readonly projetoId: string;
@@ -44,19 +44,19 @@ export interface LayoutRead {
 }
 
 /**
- * In-process export use case for ConfiguracaoLayout (COMP-016, D-I / G2).
+ * In-process export use case for ConfiguracaoLayout.
  *
  * Called by PUB at ePub export time — NOT the HTTP controller path.
  * The HTTP path uses `GetLayoutViewUseCase` (lazy default). This use case:
  *   - Returns `null` when no composition exists for the project.
  *   - Filters out stale overrides by calling `ManuscriptContentPort.nodeExists`
- *     for each override's `referenciaNo` (R2/G4, SPEC-10.C2).
- *   - Returns only the honoured parameter set (§7.3) — no extra fields exposed.
+ *     for each override's `referenciaNo`.
+ *   - Returns only the honoured parameter set — no extra fields exposed.
  *
  * Wiring: provided by CompModule under a token; DI token in comp.tokens.ts.
  *
- * RULE-04: does not import infrastructure/ directly.
- * RULE-02: resides in modules/ — @nestjs/common decorators are permitted here.
+ * Does not import infrastructure/ directly.
+ * Resides in modules/ — @nestjs/common decorators are permitted here.
  */
 @Injectable()
 export class GetConfiguracaoLayoutExportUseCase {
@@ -91,7 +91,7 @@ export class GetConfiguracaoLayoutExportUseCase {
     }
 
     // Filter stale overrides: exclude any override whose referenciaNo no longer
-    // resolves in the current IMP content tree (R2/G4, SPEC-10.C2, api-contract §6.5).
+    // resolves in the current IMP content tree (api-contract §6.5).
     const nonStaleOverrides: LayoutOverrideRead[] = [];
     for (const override of layout.overrides) {
       const exists = await this.manuscriptContent.nodeExists(projetoId, override.referenciaNo);

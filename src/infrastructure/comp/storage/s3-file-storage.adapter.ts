@@ -1,7 +1,7 @@
 import type { FileStoragePort } from '../../../modules/comp/ports/file-storage.port';
 
 /**
- * S3 adapter for FileStoragePort (INT-COMP-002 / post-POC placeholder).
+ * S3 adapter for FileStoragePort (placeholder, not implemented).
  *
  * This stub is intentionally not implemented. Activate it in AppModule by
  * replacing DiskFileStorageAdapter with this class once:
@@ -12,14 +12,14 @@ import type { FileStoragePort } from '../../../modules/comp/ports/file-storage.p
  *
  * No changes to use cases are required — the swap is purely in AppModule.
  *
- * RULE-06: outbound storage client — lives in infrastructure/comp/storage. ✓
+ * Outbound storage client — lives in infrastructure/comp/storage.
  */
 export class S3FileStorageAdapter implements FileStoragePort {
   store(_key: string, _buffer: Buffer): Promise<string> {
-    throw new Error('NOT_IMPLEMENTED: S3FileStorageAdapter — see INT-COMP-002');
+    throw new Error('NOT_IMPLEMENTED: S3FileStorageAdapter');
   }
 
   delete(_key: string): Promise<void> {
-    throw new Error('NOT_IMPLEMENTED: S3FileStorageAdapter — see INT-COMP-002');
+    throw new Error('NOT_IMPLEMENTED: S3FileStorageAdapter');
   }
 }

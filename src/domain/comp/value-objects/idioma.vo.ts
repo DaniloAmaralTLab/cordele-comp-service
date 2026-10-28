@@ -4,10 +4,10 @@ import { DomainException } from '../../shared/domain-exception';
  * Value object for the `idioma` (language) field of the Metadados aggregate.
  *
  * Restricts the set of valid IETF language subtags to the four supported
- * by Cordelê (SPEC-02, data-model §2.1). Throws DomainException on any
+ * by Cordelê. Throws DomainException on any
  * other value so validation is never duplicated in adapters or controllers.
  *
- * Pure TypeScript — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript — no @nestjs/* or @prisma/client imports.
  */
 export type Idioma = 'pt' | 'en' | 'es' | 'fr';
 

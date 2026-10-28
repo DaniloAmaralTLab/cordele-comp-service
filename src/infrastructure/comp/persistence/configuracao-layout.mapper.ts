@@ -17,7 +17,7 @@ type ConfiguracaoLayoutWithOverrides = ConfiguracaoLayoutModel & { overrides: La
  *
  * `LayoutOverride` uses `referenciaNo` (matching the Prisma column `referencia_no`).
  *
- * RULE-01: ConfiguracaoLayout aggregate does not import @prisma/client — this is the bridge.
+ * ConfiguracaoLayout aggregate does not import @prisma/client — this is the bridge.
  */
 export class ConfiguracaoLayoutMapper {
   /**
@@ -54,11 +54,11 @@ export class ConfiguracaoLayoutMapper {
    * Maps a Prisma `LayoutOverride` row to the domain entity.
    *
    * Overrides with `tipo='em-branco'` in the DB are coerced to stale placeholders
-   * because the MVP application layer rejects them on write (D-H).
+   * because the MVP application layer rejects them on write.
    */
   static overrideToDomain(model: LayoutOverrideModel): LayoutOverride {
     if (model.tipo === 'em-branco') {
-      // em-branco is reserved/deferred (D-H). Coerce to a stale imagem override so
+      // em-branco is reserved/deferred. Coerce to a stale imagem override so
       // the LayoutOverride constructor does not throw, but stale=true flags it.
       return new LayoutOverride({
         id: model.id,

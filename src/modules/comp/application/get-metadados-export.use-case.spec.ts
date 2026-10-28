@@ -3,7 +3,7 @@ import { Metadados } from '../../../domain/comp/metadados.aggregate';
 import type { MetadadosRepository } from '../ports/metadados-repository.port';
 
 /**
- * Unit spec for GetMetadadosExportUseCase (COMP-016, D-I / G2).
+ * Unit spec for GetMetadadosExportUseCase.
  *
  * Verifies the in-process export contract:
  *   - Returns null when no row has been materialized (PUB receives null — not a lazy default).
@@ -127,7 +127,7 @@ describe('GetMetadadosExportUseCase', () => {
 
     const result = await useCase.get(PROJETO_ID);
 
-    // `materialized` must NOT be present on MetadadosRead (§6.5).
+    // `materialized` must NOT be present on MetadadosRead.
     expect(result).not.toBeNull();
     expect((result as unknown as Record<string, unknown>)['materialized']).toBeUndefined();
   });

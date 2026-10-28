@@ -9,8 +9,8 @@ import { ConfiguracaoLayout } from '../../../domain/comp/configuracao-layout.agg
  * Unit spec for UpdateLayoutUseCase.
  *
  * Verifies:
- *  - tipo='em-branco' rejected with 422 (D-H, COMP-007).
- *  - Overrides whose referenciaNo is absent in the content tree are marked stale (D-K).
+ *  - tipo='em-branco' rejected with 422.
+ *  - Overrides whose referenciaNo is absent in the content tree are marked stale.
  *  - When content tree is null (no manuscript), all overrides are stale.
  *  - Valid overrides with resolved referenciaNo remain active.
  * Ports are mocked — no DB, no Nest.
@@ -67,10 +67,10 @@ describe('UpdateLayoutUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // D-H: tipo='em-branco' rejected with 422
+  // tipo='em-branco' rejected with 422
   // ---------------------------------------------------------------------------
 
-  it('rejects override with tipo=em-branco (422, D-H)', async () => {
+  it('rejects override with tipo=em-branco (422)', async () => {
     await expect(useCase.execute({
       ...validLayout(),
       overrides: [{ referenciaNo: 'para-001', tipo: 'em-branco', ordem: 0 }],
@@ -94,17 +94,11 @@ describe('UpdateLayoutUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // COMP-007 item 2 — design decision: nodeExists=false marks override stale (not 422)
+  // nodeExists=false marks the override stale (not 422)
   // ---------------------------------------------------------------------------
 
   it('should mark override as stale (not reject 422) when nodeExists returns false', async () => {
-    // COMP-007 item 2 — accepted design divergence:
-    // The original issue spec said nodeExists=false should trigger 422 + no rows written.
-    // Actual implementation: override is marked stale=true and the use case returns 200.
-    // Behavior confirmed by BDD boundary-ports Test 2 and update-layout specs.
-    //
-    // This test documents the accepted "stale+200" behavior using the exact validator
-    // name so that validator-score.py can mark the criterion as closed.
+    // stale + 200 em vez de 422 é intencional.
     manuscript.getContentTree.mockResolvedValue({
       manuscritoId: 'msc-001',
       estrutura: [{ nodeId: 'img-EXISTS', tipo: 'imagem' }],
@@ -124,7 +118,7 @@ describe('UpdateLayoutUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // D-K: override referenciaNo validation
+  // Override referenciaNo validation
   // ---------------------------------------------------------------------------
 
   it('marks override as stale when referenciaNo is absent from content tree', async () => {
@@ -159,7 +153,7 @@ describe('UpdateLayoutUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Exact names required by validator-score (Contrato operacional P2)
+  // ManuscriptContentPort edge cases
   // ---------------------------------------------------------------------------
 
   it('should mark all overrides stale when ManuscriptContentPort returns null', async () => {
@@ -193,7 +187,7 @@ describe('UpdateLayoutUseCase', () => {
       ],
     });
 
-    // Active overrides exclude stale ones (D-K).
+    // Active overrides exclude stale ones.
     expect(result.activeOverrides()).toHaveLength(1);
     expect(result.activeOverrides()[0].referenciaNo).toBe('img-001');
     expect(result.staleOverrides()).toHaveLength(1);
@@ -266,7 +260,7 @@ describe('UpdateLayoutUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Idempotency: no-op when payload is identical (COMP-007, SPEC-05)
+  // Idempotency: no-op when payload is identical
   // ---------------------------------------------------------------------------
 
   it('skips upsert and does not emit LayoutUpdated when payload is identical to persisted state', async () => {

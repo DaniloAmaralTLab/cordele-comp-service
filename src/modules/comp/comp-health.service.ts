@@ -15,7 +15,7 @@ import { COMP_DATABASE_HEALTH_PORT } from './ports/database-health.port';
  *   - `'fail'`     — DB unreachable; service effectively down for writes.
  *
  * Intentionally avoids `@nestjs/terminus` so the shape is a plain TS contract
- * with no framework coupling (COMP-019 rewrite — simpler API).
+ * with no framework coupling.
  */
 export interface HealthCheckResult {
   status: 'ok' | 'degraded' | 'fail';
@@ -26,19 +26,19 @@ export interface HealthCheckResult {
 }
 
 /**
- * Readiness health service for the COMP bounded context (COMP-019 refactor).
+ * Readiness health service for the COMP bounded context.
  *
  * Replaces the terminus-based `CompHealthIndicator` with a simpler service
  * that returns a plain `HealthCheckResult` without framework-specific types.
  *
  * Checks performed by `check()`:
- *   1. **DB** — delegates to `DatabaseHealthPort.pingDatabase()` (RULE-04 compliant).
+ *   1. **DB** — delegates to `DatabaseHealthPort.pingDatabase()`.
  *      Failure → `status: 'fail'` (critical).
  *   2. **Storage** — write + delete probe in `COMP_STORAGE_DIR`.
  *      Failure → `status: 'degraded'` (non-critical; metadata/layout still ok).
  *
- * RULE-04: injects `DatabaseHealthPort` via token — no direct infrastructure import.
- * RULE-08: no console.log — uses NestJS Logger.
+ * Injects `DatabaseHealthPort` via token — no direct infrastructure import.
+ * No console.log — uses NestJS Logger.
  */
 @Injectable()
 export class CompHealthService {

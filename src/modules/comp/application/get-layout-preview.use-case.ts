@@ -23,20 +23,20 @@ export interface PreviewContextResult {
 }
 
 /**
- * Assembles the layout preview context for client-side rendering (T06, D-K, api-contract §4.7).
+ * Assembles the layout preview context for client-side rendering (api-contract §4.7).
  *
  * Fetches the manuscript content tree and the persisted layout in parallel:
  *   - If the content tree is null (no manuscript imported yet) → 409 `manuscript-missing`.
- *   - ConfiguracaoLayout falls back to the default (D-M) when absent.
+ *   - ConfiguracaoLayout falls back to the default when absent.
  *
- * Validates existing overrides against the current content tree (D-K):
+ * Validates existing overrides against the current content tree:
  *   - Overrides whose referenciaNo resolves → active (honoured by PUB).
  *   - Overrides whose referenciaNo is absent → stale (returned for UI warnings).
  *
  * Nothing is persisted — this is a pure read-assembly operation.
  * The caller (CompController) maps the result to PreviewContextResponseDto.
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/.
+ * This file is in modules/ and does NOT import from infrastructure/.
  */
 @Injectable()
 export class GetLayoutPreviewUseCase {
@@ -58,7 +58,7 @@ export class GetLayoutPreviewUseCase {
       this.layoutRepo.findByProjetoId(input.projetoId),
     ]);
 
-    // When no manuscript exists yet → 409 (COMP-008, urn:cordele:comp:manuscript-missing).
+    // When no manuscript exists yet → 409 (urn:cordele:comp:manuscript-missing).
     if (contentTree === null) {
       throw new DomainException(
         'MANUSCRIPT_MISSING',
@@ -69,7 +69,7 @@ export class GetLayoutPreviewUseCase {
 
     const layout = rawLayout ?? ConfiguracaoLayout.createDefault(input.projetoId);
 
-    // Validate overrides against the current content tree (D-K).
+    // Validate overrides against the current content tree.
     let validatedLayout = layout;
     if (layout.overrides.length > 0) {
       const existingNodeIds = collectNodeIds(contentTree.estrutura);

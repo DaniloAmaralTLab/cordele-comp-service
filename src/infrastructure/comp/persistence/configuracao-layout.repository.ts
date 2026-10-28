@@ -16,11 +16,10 @@ import { PrismaEmpresaService } from '../../persistence/prisma-empresa.service';
  * `upsert` atomically replaces both the layout row and all its overrides in a single
  * `$transaction` — preventing partial states that could corrupt the layout.
  *
- * `replaceOverrides` is kept as a public utility method (used by integration tests
- * and PrismaCompositionErasureAdapter indirectly; not part of the interface).
+ * `replaceOverrides` is kept as a public utility method (not part of the interface).
  *
- * RULE-01/02: no @prisma/client or @nestjs imports in domain.
- * RULE-07: empresa context is required for every query.
+ * No @prisma/client or @nestjs imports in domain.
+ * Empresa context is required for every query.
  */
 @Injectable()
 export class PrismaConfiguracaoLayoutRepository implements ConfiguracaoLayoutRepositoryPort {
@@ -180,10 +179,7 @@ export class PrismaConfiguracaoLayoutRepository implements ConfiguracaoLayoutRep
   }
 
   /**
-   * Deletes the ConfiguracaoLayout row (overrides cascade via FK ON DELETE CASCADE).
-   *
-   * Idempotent: silences NOT_FOUND. Schema is resolved from AsyncLocalStorage.
-   * Called by PrismaCompositionErasureAdapter as part of the LGPD purge cascade.
+   * Remove a configuração de layout do projeto.
    */
   async delete(projetoId: string): Promise<void> {
     this.logger.debug(`delete projetoId=${projetoId}`);

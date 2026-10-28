@@ -13,8 +13,8 @@ import { PrismaEmpresaService } from '../../persistence/prisma-empresa.service';
  * populated by EmpresaContextMiddleware, or by `PrismaEmpresaService.runWithSlug`
  * in tests).
  *
- * RULE-01/02: no @prisma/client or @nestjs imports in domain — this adapter is the bridge.
- * RULE-07: empresa context is required; `withCurrentTenant` throws if not set.
+ * No @prisma/client or @nestjs imports in domain — this adapter is the bridge.
+ * Empresa context is required; `withCurrentTenant` throws if not set.
  *
  * Note: `upsert` uses the entity's `empresaSlug` directly (set by the use case from
  * the request context), providing a double-check at the data level. For `findByProjetoId`
@@ -30,7 +30,7 @@ export class PrismaMetadadosRepository implements MetadadosRepository {
    * Returns the Metadados aggregate for the given project, or null when not found.
    *
    * Schema is resolved from the current empresa context (AsyncLocalStorage).
-   * The caller (GetMetadadosViewUseCase) applies the lazy-default (D-M) logic.
+   * The caller (GetMetadadosViewUseCase) applies the lazy-default logic.
    */
   async findByProjetoId(projetoId: string): Promise<MetadadosEntity | null> {
     this.logger.debug(`findByProjetoId projetoId=${projetoId}`);
@@ -86,10 +86,10 @@ export class PrismaMetadadosRepository implements MetadadosRepository {
    * Batch fetch for multiple projects — ONE `findMany` query (no N+1).
    *
    * Returns only found projects as domain aggregates. Missing projetoIds are
-   * absent from the result; callers treat absence as `materialized=false` (D-M).
+   * absent from the result; callers treat absence as `materialized=false`.
    *
    * Schema is resolved from the current empresa context (AsyncLocalStorage).
-   * Called by ProjectMetadataUseCase (COMP-017).
+   * Called by ProjectMetadataUseCase.
    */
   async findManyByProjetoIds(ids: string[]): Promise<MetadadosEntity[]> {
     if (ids.length === 0) {

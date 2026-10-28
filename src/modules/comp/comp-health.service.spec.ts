@@ -4,7 +4,7 @@ import { COMP_DATABASE_HEALTH_PORT } from './ports/database-health.port';
 import { CompHealthService } from './comp-health.service';
 
 /**
- * Unit spec for CompHealthService (COMP-019 — health status coverage).
+ * Unit spec for CompHealthService.
  *
  * All external dependencies are mocked:
  *   - `DatabaseHealthPort.pingDatabase()` — DI token double
@@ -15,8 +15,8 @@ import { CompHealthService } from './comp-health.service';
  *   2. DB ok + storage probe throws  → status:'degraded', checks:{db:'ok', storage:'degraded'}
  *   3. DB ping returns false          → status:'fail',     checks:{db:'fail', storage:'ok'}
  *
- * RULE-04: no PrismaService or DiskFileStorageAdapter imported here.
- * RULE-08: no console.log.
+ * No PrismaService or DiskFileStorageAdapter imported here.
+ * No console.log.
  */
 
 // ---------------------------------------------------------------------------

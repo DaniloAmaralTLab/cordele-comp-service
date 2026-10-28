@@ -16,7 +16,7 @@ export interface UpdateMetadadosInput {
 }
 
 /**
- * Idempotent upsert of editorial metadata (COMP-004, T05, api-contract §4.2).
+ * Idempotent upsert of editorial metadata (api-contract §4.2).
  *
  * Creates the row on first call; re-sending an identical body is a safe no-op.
  * Domain invariants (titulo/autor non-blank, idioma valid) are enforced by
@@ -25,7 +25,7 @@ export interface UpdateMetadadosInput {
  * Concurrency: DB UNIQUE(projeto_id) serializes concurrent writes — no
  * optimistic-lock or distributed lock is required (per-project singleton).
  *
- * Idempotency (COMP-004 SPEC-05):
+ * Idempotency:
  *   When the existing row already has the same five editable fields (titulo,
  *   autor, idioma, isbn, categoria), the use case returns the existing entity
  *   WITHOUT calling upsert() again and WITHOUT emitting MetadataUpdated.
@@ -35,7 +35,7 @@ export interface UpdateMetadadosInput {
  *   'MetadataUpdated' is emitted post-persist via DomainEventEmitter only when
  *   the operation causes a real write (new row or changed field).
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/.
+ * This file is in modules/ and does NOT import from infrastructure/.
  */
 @Injectable()
 export class UpdateMetadadosUseCase {
@@ -55,7 +55,7 @@ export class UpdateMetadadosUseCase {
 
     const existing = await this.metadadosRepo.findByProjetoId(input.projetoId);
 
-    // Idempotency check (COMP-004 / SPEC-05): if a row exists and all five
+    // Idempotency check: if a row exists and all five
     // editable fields are unchanged, skip the write and return the current state.
     if (existing?.materialized) {
       const sameContent = existing.hasSameContentAs({

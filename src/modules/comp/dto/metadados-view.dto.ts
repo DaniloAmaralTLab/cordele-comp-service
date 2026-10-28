@@ -8,7 +8,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
  *  - PUT  /api/comp/projetos/{projetoId}/metadados
  *  - POST /api/comp/projetos/{projetoId}/capa (partial — only capaUrl + atualizadoEm)
  *
- * `materialized: false` indicates a synthesized default (D-M) — the row does not
+ * `materialized: false` indicates a synthesized default — the row does not
  * exist in the database yet. `materialized: true` means it was persisted at least once.
  */
 export class MetadadosViewDto {
@@ -42,7 +42,7 @@ export class MetadadosViewDto {
   readonly categoria!: string | null;
 
   @ApiPropertyOptional({
-    description: 'Cover image URL from FileStoragePort. Null when no cover uploaded (D-L).',
+    description: 'Cover image URL from FileStoragePort. Null when no cover uploaded.',
     nullable: true,
     example: 'https://storage.example.com/capa-romance.jpg',
   })
@@ -63,7 +63,7 @@ export class MetadadosViewDto {
 
   @ApiProperty({
     description:
-      'True when the record has been persisted at least once. False for a synthesized default (D-M).',
+      'True when the record has been persisted at least once. False for a synthesized default.',
     example: true,
   })
   readonly materialized!: boolean;

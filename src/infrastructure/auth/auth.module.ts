@@ -16,10 +16,10 @@ import { JwtStrategy } from './jwt.strategy';
  * (composition root) via `infrastructure/comp/auth/` — not here.
  *
  * `EmpresaContextMiddleware` is registered in `AppModule.configure()` to cover
- * all routes without violating RULE-04 (AppModule is the composition root and
+ * all routes without breaking the module boundary (AppModule is the composition root and
  * the only module that imports from both modules/ and infrastructure/).
  *
- * P5 (COMP-013): EmpresaContextService + EmpresaContextMiddleware propagate the
+ * EmpresaContextService + EmpresaContextMiddleware propagate the
  * empresaId JWT claim via AsyncLocalStorage before any repository call resolves
  * the tenant schema.
  */

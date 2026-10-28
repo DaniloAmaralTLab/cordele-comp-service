@@ -2,7 +2,7 @@ import { EmpresaContextMiddleware } from './empresa-context.middleware';
 import { EmpresaContextService } from './empresa-context.service';
 
 /**
- * Unit tests for EmpresaContextMiddleware (COMP-018 — correlationId ALS propagation).
+ * Unit tests for EmpresaContextMiddleware.
  *
  * Key assertions:
  *  1. A correlationId present on `req` (set by CorrelationMiddleware) is forwarded
@@ -16,7 +16,7 @@ import { EmpresaContextService } from './empresa-context.service';
  * verify that the ALS propagation actually works end-to-end, not just that the
  * correct arguments are passed.
  *
- * RULE-08: no console.log. ✓
+ * No console.log.
  */
 
 /** Build a minimal JWT with the given sub and empresa_id (not signed — middleware decodes only). */
@@ -56,7 +56,7 @@ describe('EmpresaContextMiddleware', () => {
   });
 
   // -------------------------------------------------------------------------
-  // correlationId ALS propagation (COMP-018)
+  // correlationId ALS propagation
   // -------------------------------------------------------------------------
 
   describe('correlationId propagation into ALS', () => {

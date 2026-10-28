@@ -5,11 +5,11 @@ import { DomainException } from '../shared/domain-exception';
  * Unit spec for the Metadados aggregate — COMP editorial identity.
  *
  * Covers all invariants enforced by the domain (titulo, autor, idioma), the
- * lazy-default factories (D-M), cover management and the update method.
+ * lazy-default factories, cover management and the update method.
  * No Nest, no Prisma, no HTTP.
  *
  * Tests 1-14 are a direct port of the original MetadadosEntity spec preserved
- * across the refactoring. Test 15 verifies the COMP-003 `createDefault` factory.
+ * across the refactoring. Test 15 verifies the `createDefault` factory.
  */
 describe('Metadados', () => {
   const PROJETO_ID = '11111111-1111-4111-8111-111111111111';
@@ -30,7 +30,7 @@ describe('Metadados', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Lazy default (D-M) — materialized=false bypasses invariants
+  // Lazy default — materialized=false bypasses invariants
   // ---------------------------------------------------------------------------
 
   it('defaultsFor() returns materialized=false with empty fields', () => {
@@ -134,7 +134,7 @@ describe('Metadados', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // createDefault (COMP-003) — convenience factory without empresaSlug
+  // createDefault — convenience factory without empresaSlug
   // ---------------------------------------------------------------------------
 
   it('createDefault returns materialized=false', () => {

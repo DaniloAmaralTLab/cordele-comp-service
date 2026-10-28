@@ -3,9 +3,9 @@ import { Metadados } from '../../../domain/comp/metadados.aggregate';
 import type { MetadadosRepository } from '../ports/metadados-repository.port';
 
 /**
- * Unit spec for GetMetadadosViewUseCase (COMP-004).
+ * Unit spec for GetMetadadosViewUseCase.
  *
- * Verifies the lazy-default contract (D-M) and normal retrieval.
+ * Verifies the lazy-default contract and normal retrieval.
  * Repository is mocked with jest.fn() — no DB, no Nest bootstrap.
  */
 
@@ -52,7 +52,7 @@ describe('GetMetadadosViewUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Lazy default (D-M) — no row found
+  // Lazy default — no row found
   // ---------------------------------------------------------------------------
 
   it('should return default with materialized=false when repo returns null', async () => {
@@ -76,7 +76,7 @@ describe('GetMetadadosViewUseCase', () => {
     expect(result.idioma).toBe('pt');
   });
 
-  it('never throws when repository returns null (D-M)', async () => {
+  it('never throws when repository returns null', async () => {
     repo.findByProjetoId.mockResolvedValue(null);
 
     await expect(

@@ -3,11 +3,11 @@ import { LayoutOverride } from './layout-override.entity';
 import { DomainException } from '../shared/domain-exception';
 
 /**
- * Unit spec for ConfiguracaoLayout aggregate — presentation rules (COMP-006).
+ * Unit spec for ConfiguracaoLayout aggregate — presentation rules.
  *
  * Covers:
- * - Lazy default factory `createDefault` (D-M).
- * - Typography bounds enforced when materialized=true (data-model §2.2).
+ * - Lazy default factory `createDefault`.
+ * - Typography bounds enforced when materialized=true.
  * - Heading order invariant (h1_tamanho >= h2_tamanho >= h3_tamanho).
  * - Override stale validation.
  * - LayoutOverride entity invariants (em-branco, alinhamento required for imagem).
@@ -47,7 +47,7 @@ describe('ConfiguracaoLayout', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Lazy default (D-M) — COMP-006 acceptance criteria
+  // Lazy default
   // ---------------------------------------------------------------------------
 
   it('createDefault() returns materialized=false with canonical defaults', () => {
@@ -78,10 +78,10 @@ describe('ConfiguracaoLayout', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Typography invariants — enforced when materialized=true (COMP-006)
+  // Typography invariants — enforced when materialized=true
   // ---------------------------------------------------------------------------
 
-  it('rejects fonte_corpo_tamanho < 12 (COMP-006 acceptance criteria)', () => {
+  it('rejects fonte_corpo_tamanho < 12', () => {
     expect(() => new ConfiguracaoLayout({
       ...validProps(),
       fonte_corpo_tamanho: 11,
@@ -117,10 +117,10 @@ describe('ConfiguracaoLayout', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Heading order invariant: h1 >= h2 >= h3 (COMP-006 acceptance criteria)
+  // Heading order invariant: h1 >= h2 >= h3
   // ---------------------------------------------------------------------------
 
-  it('rejects h1_tamanho < h2_tamanho (COMP-006 acceptance criteria)', () => {
+  it('rejects h1_tamanho < h2_tamanho', () => {
     expect(() => new ConfiguracaoLayout({
       ...validProps(),
       h1_tamanho: 20,
@@ -196,7 +196,7 @@ describe('ConfiguracaoLayout', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // LayoutOverride entity invariants (COMP-006 acceptance criteria)
+  // LayoutOverride entity invariants
   // ---------------------------------------------------------------------------
 
   it('should reject tipo=em-branco with DomainException 422', () => {
@@ -211,7 +211,7 @@ describe('ConfiguracaoLayout', () => {
     expect(caught?.code).toBe('EM_BRANCO_NAO_SUPORTADO');
   });
 
-  it('should reject tipo=imagem without alinhamento with DomainException 422 (COMP-006 acceptance criteria)', () => {
+  it('should reject tipo=imagem without alinhamento with DomainException 422', () => {
     let caught: DomainException | undefined;
     try {
       new LayoutOverride({ referenciaNo: 'img-001', tipo: 'imagem', alinhamento: undefined, ordem: 0 });

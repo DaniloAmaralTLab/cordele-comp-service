@@ -1,8 +1,7 @@
 // Prisma schema for comp-service (cordele).
-// D-545: Prisma + PostgreSQL is the Node persistence stack.
-// D-619: schema-per-tenant via dynamic PrismaClient per schema (not multiSchema preview feature).
+// Schema-per-tenant via a dynamic PrismaClient per schema (not the multiSchema preview feature).
 // Each tenant schema (emp_<slug>) is isolated — no cross-tenant query is reachable.
-// The PrismaEmpresaService (P3) creates one PrismaClient per schema, cached by slug.
+// PrismaEmpresaService creates one PrismaClient per schema, cached by slug.
 
 datasource db {
   provider = "postgresql"
@@ -17,12 +16,12 @@ generator client {
 }
 
 // =============================================================================
-// COMP domain models — source: contracts/data-model.md (2026-08-25)
-// Tenant schema: emp_<slug>. One PrismaClient per schema (D-619).
+// Composition models
+// Tenant schema: emp_<slug>. One PrismaClient per schema.
 // =============================================================================
 
-/// Editorial identity of a project (data-model §2.1).
-/// One row per project; lazy-materialized (D-M). Owner: COMP.
+/// Editorial identity of a project.
+/// One row per project; materialized lazily.
 model Metadados {
   id           String   @id @default(uuid()) @db.Uuid
   projetoId    String   @unique @map("projeto_id") @db.Uuid
@@ -33,15 +32,15 @@ model Metadados {
   categoria    String?
   capaUrl      String?  @map("capa_url")
   editoraNome  String?  @map("editora_nome")
-  /// false = lazy-default (cover uploaded but no PUT /metadados yet); true = metadata has been explicitly saved (D-M).
+  /// false = lazy-default (cover uploaded but no PUT /metadados yet); true = metadata has been explicitly saved.
   materialized Boolean  @default(false)
   atualizadoEm DateTime @default(now()) @map("atualizado_em") @db.Timestamptz(6)
 
   @@map("metadados")
 }
 
-/// Presentation parameters of a project (data-model §2.2).
-/// One row per project; lazy-materialized (D-M). Parent of LayoutOverride.
+/// Presentation parameters of a project.
+/// One row per project; materialized lazily. Parent of LayoutOverride.
 model ConfiguracaoLayout {
   id                 String           @id @default(uuid()) @db.Uuid
   projetoId          String           @unique @map("projeto_id") @db.Uuid
@@ -58,8 +57,8 @@ model ConfiguracaoLayout {
   @@map("configuracao_layout")
 }
 
-/// Page/image presentation overrides (data-model §2.3).
-/// References IMP content nodes (read-only; ADR-002). MVP: tipo=imagem only.
+/// Page/image presentation overrides.
+/// References nodes of the imported manuscript (read-only). MVP: tipo=imagem only.
 model LayoutOverride {
   id                   String             @id @default(uuid()) @db.Uuid
   configuracaoLayoutId String             @map("configuracao_layout_id") @db.Uuid

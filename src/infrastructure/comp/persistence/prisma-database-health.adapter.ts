@@ -4,7 +4,7 @@ import { PrismaService } from '../../persistence/prisma.service';
 import type { DatabaseHealthPort } from '../../../modules/comp/ports/database-health.port';
 
 /**
- * Prisma-backed implementation of `DatabaseHealthPort` (COMP-019).
+ * Prisma-backed implementation of `DatabaseHealthPort`.
  *
  * Executes a `SELECT 1` via `PrismaService.$queryRaw` to verify database
  * connectivity. Returns `true` on success and `false` on any error.
@@ -14,9 +14,9 @@ import type { DatabaseHealthPort } from '../../../modules/comp/ports/database-he
  *
  * Registered in `AppModule` under `COMP_DATABASE_HEALTH_PORT` so
  * `CompHealthService` (modules/) can use the port without importing
- * `infrastructure/` directly (RULE-04 compliance).
+ * `infrastructure/` directly.
  *
- * RULE-08: no console.log — uses Nest Logger.
+ * No console.log — uses Nest Logger.
  */
 @Injectable()
 export class PrismaDatabaseHealthAdapter implements DatabaseHealthPort {

@@ -19,10 +19,7 @@ import { EmpresaContextService } from './empresa-context.service';
  * Rotas sem Bearer token (ex.: `/health`) recebem `next()` sem contexto; o guard
  * delas é `@Public()` e os repositórios nunca são atingidos.
  *
- * Registro: `CompModule.configure` via `NestModule` (P5 — COMP-013).
- *
- * @see docs/architecture/shared/multi-empresa.md
- * @see docs/architecture/backend/plans/plan-COMP.md §P5
+ * Registro: `CompModule.configure` via `NestModule`.
  */
 @Injectable()
 export class EmpresaContextMiddleware implements NestMiddleware {
@@ -52,7 +49,7 @@ export class EmpresaContextMiddleware implements NestMiddleware {
           if (userId && empresaId) {
             // correlationId is set on req by CorrelationMiddleware (which runs first)
             // and forwarded into the ALS so that every provider can access it via
-            // EmpresaContextService.get()?.correlationId (COMP-018).
+            // EmpresaContextService.get()?.correlationId.
             this.empresaContextService.run(
               { userId, empresaId, correlationId: req.correlationId },
               () => next(),

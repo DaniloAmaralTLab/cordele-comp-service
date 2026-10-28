@@ -7,7 +7,7 @@ import { CompHealthService } from '../../modules/comp/comp-health.service';
 import type { HealthCheckResult } from '../../modules/comp/comp-health.service';
 
 /**
- * Unit spec for HealthController (COMP-019 — HTTP status coverage).
+ * Unit spec for HealthController.
  *
  * Verifies that the controller translates the three `CompHealthService.check()`
  * outcomes into the correct HTTP status codes and response shapes:
@@ -19,7 +19,7 @@ import type { HealthCheckResult } from '../../modules/comp/comp-health.service';
  * `CompHealthService` is replaced by a jest spy — no DB, no disk, no Nest DI wiring.
  * Routes are `@Public()` so no guard registration is required.
  *
- * RULE-08: no console.log. ✓
+ * No console.log.
  */
 
 // ---------------------------------------------------------------------------

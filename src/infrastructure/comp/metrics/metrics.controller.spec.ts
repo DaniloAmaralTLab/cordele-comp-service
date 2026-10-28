@@ -6,7 +6,7 @@ import { MetricsController } from './metrics.controller';
 import { CompMetricsService, COMP_METRICS } from './comp-metrics.service';
 
 /**
- * Unit tests for MetricsController (COMP-019 — Prometheus scrape endpoint).
+ * Unit tests for MetricsController.
  *
  * Verifies:
  *  1. `GET /api/v1/comp/metrics` returns HTTP 200 with Content-Type text/plain.
@@ -18,7 +18,7 @@ import { CompMetricsService, COMP_METRICS } from './comp-metrics.service';
  * serialisation round-trip — increment → getSnapshot → toPrometheusText — is
  * tested end-to-end.
  *
- * RULE-08: no console.log. ✓
+ * No console.log.
  */
 
 // ---------------------------------------------------------------------------

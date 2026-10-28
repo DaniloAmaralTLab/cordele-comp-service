@@ -4,7 +4,7 @@ import { LayoutViewDto } from './layout-view.dto';
 import { LayoutOverrideViewDto } from './layout-view.dto';
 
 /**
- * Manuscript content tree node (read-only; owned by IMP — api-contract §6.4, D-K).
+ * Manuscript content tree node (read-only; owned by IMP — api-contract §6.4).
  *
  * The shape mirrors what ManuscriptContentPort.getContentTree returns.
  * COMP never copies or mutates this data; it is passed through as-is.
@@ -24,7 +24,7 @@ export class ManuscritoEstrutura {
 }
 
 /**
- * View DTO for the preview-context endpoint (api-contract §6.4, D-K).
+ * View DTO for the preview-context endpoint (api-contract §6.4).
  *
  * Assembles the read-only manuscript content tree (via ManuscriptContentPort) +
  * ConfiguracaoLayout + overrides into a single JSON payload the SPA renders
@@ -42,7 +42,7 @@ export class PreviewContextDto {
 
   @ApiProperty({
     description:
-      'Current ConfiguracaoLayout with only honoured (non-stale) overrides applied (D-K).',
+      'Current ConfiguracaoLayout with only honoured (non-stale) overrides applied.',
     type: LayoutViewDto,
   })
   readonly layout!: LayoutViewDto;

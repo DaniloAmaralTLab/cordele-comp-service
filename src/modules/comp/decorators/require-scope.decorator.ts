@@ -6,7 +6,7 @@ import { SetMetadata } from '@nestjs/common';
  * IMPORTANT: must stay in sync with `REQUIRED_SCOPES_KEY` in
  * `src/infrastructure/comp/auth/scope.guard.ts`.  Both files use the same
  * string literal so that the guard and the decorator cooperate without
- * either layer importing the other (RULE-04).
+ * either layer importing the other.
  */
 export const REQUIRED_SCOPES_KEY = 'requiredScopes';
 
@@ -19,7 +19,7 @@ export const REQUIRED_SCOPES_KEY = 'requiredScopes';
  * `ForbiddenException` (403) is thrown.
  *
  * Lives in `modules/comp/decorators/` so `CompController` can use it without
- * importing from `infrastructure/` (RULE-04 compliance).
+ * importing from `infrastructure/`.
  *
  * Example:
  * ```ts

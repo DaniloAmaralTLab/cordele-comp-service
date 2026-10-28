@@ -5,7 +5,7 @@ import { AsyncLocalStorage } from 'async_hooks';
  * Context stored per request via `AsyncLocalStorage`.
  *
  * Populated by `EmpresaContextMiddleware` before any guard or handler runs.
- * Every repository call is scoped by `empresaId` (RULE-07).
+ * Every repository call is scoped by `empresaId`.
  *
  * `correlationId` is set by `CorrelationMiddleware` (runs before
  * `EmpresaContextMiddleware`) and forwarded into the ALS so that any provider
@@ -15,7 +15,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 export interface EmpresaRequestContext {
   readonly userId: string;
   readonly empresaId: string;
-  /** Distributed tracing id forwarded from `X-Correlation-Id` (COMP-018). */
+  /** Distributed tracing id forwarded from `X-Correlation-Id`. */
   readonly correlationId?: string;
 }
 
@@ -34,9 +34,6 @@ export interface EmpresaRequestContext {
  * // No repositório / use-case (lê):
  * const ctx = empresaContextService.require();
  * ```
- *
- * @see docs/architecture/shared/multi-empresa.md
- * @see docs/architecture/backend/plans/plan-COMP.md §P5
  */
 @Injectable()
 export class EmpresaContextService {
@@ -67,7 +64,7 @@ export class EmpresaContextService {
   /**
    * Retorna o contexto de empresa ativo ou lança `Error` se ausente.
    *
-   * Use em repositórios e use-cases onde o contexto é obrigatório (RULE-07).
+   * Use em repositórios e use-cases onde o contexto é obrigatório.
    */
   require(): EmpresaRequestContext {
     const ctx = this.als.getStore();

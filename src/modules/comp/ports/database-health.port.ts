@@ -1,15 +1,14 @@
 /**
- * Port for database health probing used by the COMP bounded context (COMP-019).
+ * Port for database health probing used by the COMP bounded context.
  *
  * Allows `CompHealthService` (in modules/) to probe database connectivity without
- * importing `PrismaService` directly from `infrastructure/persistence/`
- * (RULE-04 compliance).
+ * importing `PrismaService` directly from `infrastructure/persistence/`.
  *
  * The concrete implementation (`PrismaDatabaseHealthAdapter`) lives in
  * `infrastructure/comp/persistence/` and is bound to this token in
  * `AppModule` (composition root).
  *
- * RULE-01: no @nestjs/* or @prisma/client in this file — pure domain port.
+ * No @nestjs/* or @prisma/client in this file — pure domain port.
  */
 
 /**

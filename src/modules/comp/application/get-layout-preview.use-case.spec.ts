@@ -6,14 +6,14 @@ import type { ConfiguracaoLayoutRepositoryPort } from '../ports/configuracao-lay
 import type { ManuscriptContentPort, ContentTreeDto } from '../ports/manuscript-content.port';
 
 /**
- * Unit spec for GetLayoutPreviewUseCase (COMP-008).
+ * Unit spec for GetLayoutPreviewUseCase.
  *
  * Verifies:
  *  - No manuscript → 409 DomainException (manuscript-missing).
  *  - Stale override excluded from honoured set; stale=true on returned override.
  *  - ManuscriptContentPort throws → explicit error propagated.
  *  - Valid path → all data assembled (tree + layout + stale list).
- *  - Lazy default (D-M) for missing layout row.
+ *  - Lazy default for missing layout row.
  * All ports are mocked — no DB, no Nest.
  */
 
@@ -63,7 +63,7 @@ describe('GetLayoutPreviewUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // no manuscript → 409 (COMP-008)
+  // no manuscript → 409
   // ---------------------------------------------------------------------------
 
   it('throws 409 DomainException when no manuscript exists', async () => {
@@ -90,7 +90,7 @@ describe('GetLayoutPreviewUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Lazy defaults (D-M)
+  // Lazy defaults
   // ---------------------------------------------------------------------------
 
   it('returns lazy default layout when no layout row exists', async () => {
@@ -149,7 +149,7 @@ describe('GetLayoutPreviewUseCase', () => {
     expect(result.layout.activeOverrides()[0].referenciaNo).toBe('img-001');
   });
 
-  it('marks all overrides stale when all referenciaNo are absent (D-K)', async () => {
+  it('marks all overrides stale when all referenciaNo are absent', async () => {
     const overrides = [
       new LayoutOverride({ referenciaNo: 'img-001', tipo: 'imagem', alinhamento: 'full', ordem: 0 }),
       new LayoutOverride({ referenciaNo: 'img-002', tipo: 'imagem', alinhamento: 'centralizado', ordem: 1 }),

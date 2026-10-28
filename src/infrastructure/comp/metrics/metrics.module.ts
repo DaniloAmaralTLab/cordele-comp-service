@@ -12,7 +12,7 @@ import { MetricsController } from './metrics.controller';
  * Imported by `AppModule` (composition root) so that the scrape route is active
  * alongside the health endpoints and the main COMP API.
  *
- * RULE-04/05: infrastructure module — no imports from modules/. ✓
+ * Infrastructure module — no imports from modules/.
  */
 @Module({
   controllers: [MetricsController],

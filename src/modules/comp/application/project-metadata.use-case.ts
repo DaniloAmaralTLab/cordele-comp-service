@@ -8,7 +8,7 @@ import type { MetadadosRepository } from '../ports/metadados-repository.port';
 import { COMP_METADADOS_REPO } from '../comp.tokens';
 
 /**
- * Application use case implementing `ProjectMetadataPort` (COMP-017).
+ * Application use case implementing `ProjectMetadataPort`.
  *
  * Fetches metadata for multiple projects in a **single** `findManyByProjetoIds`
  * call — never a loop of findByProjetoId (no N+1). The heavy lifting
@@ -18,11 +18,11 @@ import { COMP_METADADOS_REPO } from '../comp.tokens';
  * can inject it in-process without an HTTP call.
  *
  * Multi-empresa: schema routing is handled by the repository adapter via
- * AsyncLocalStorage (RULE-07). Callers must execute in a request context
+ * AsyncLocalStorage. Callers must execute in a request context
  * where EmpresaContext is set (populated by EmpresaContextMiddleware).
  *
- * RULE-01/02: no @prisma/client or unconventional @nestjs imports — pure application layer.
- * RULE-04: does not import from infrastructure/ directly.
+ * No @prisma/client or unconventional @nestjs imports — pure application layer.
+ * Does not import from infrastructure/ directly.
  */
 @Injectable()
 export class ProjectMetadataUseCase implements ProjectMetadataPort {
@@ -38,7 +38,7 @@ export class ProjectMetadataUseCase implements ProjectMetadataPort {
    *
    * Uses a single repository call regardless of list size. Missing projects
    * (no row in DB) are absent from the returned map. Callers should treat
-   * absence as `materialized=false`, consistent with the D-M lazy default.
+   * absence as `materialized=false`, consistent with the lazy default.
    *
    * @param projetoIds  UUIDs of the projects to fetch.
    * @returns           Map keyed by projetoId; missing keys = not found.

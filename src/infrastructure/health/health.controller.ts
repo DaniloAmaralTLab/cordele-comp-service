@@ -11,7 +11,7 @@ import { Public } from '../comp/auth/jwt-auth.guard';
 import { CompHealthService, type HealthCheckResult } from '../../modules/comp/comp-health.service';
 
 /**
- * Readiness / liveness health endpoints for the COMP bounded context (COMP-019).
+ * Readiness / liveness health endpoints for the COMP bounded context.
  *
  * Routes:
  *   GET /api/v1/comp/health          — readiness (DB + storage probes).
@@ -25,20 +25,19 @@ import { CompHealthService, type HealthCheckResult } from '../../modules/comp/co
  *
  * `@Public()` bypasses `JwtAuthGuard` on all routes in this controller.
  *
- * Replaces the terminus-based `CompHealthIndicator` from the previous P7
- * implementation with a plain `CompHealthService.check()` call — no
- * `@nestjs/terminus` dependency (COMP-019 rewrite).
+ * Replaces the earlier terminus-based `CompHealthIndicator` with a plain `CompHealthService.check()` call — no
+ * `@nestjs/terminus` dependency.
  *
  * Decision: the health route lives here (`health.controller.ts`) rather than
  * in `CompController` because:
  *   (a) CompController is scoped to `comp/projetos/:projetoId` — any `@Get`
  *       added there would produce `/comp/projetos/:projetoId/health`, which is
  *       a per-project path, NOT a service-level health check.
- *   (b) The user instructions specify "top-level, NOT nested under /projetos/:id".
- *   (c) A dedicated health controller already existed here from P7 serving the
- *       correct top-level URL (`/api/v1/comp/health`).
+ *   (b) Health must be top-level, not nested under /projetos/:id.
+ *   (c) A dedicated health controller already served the correct top-level
+ *       URL (`/api/v1/comp/health`).
  *
- * RULE-08: no console.log. ✓
+ * No console.log.
  */
 @ApiTags('ops')
 @Controller({ path: 'comp/health', version: '1' })

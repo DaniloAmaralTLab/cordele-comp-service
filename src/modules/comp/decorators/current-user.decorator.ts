@@ -4,7 +4,7 @@ import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@
  * Shape of the authenticated principal attached to `request.user` by
  * `JwtStrategy.validate` (infrastructure/auth/jwt.strategy.ts).
  *
- * Declared here so CompController stays RULE-04 compliant: modules/ does not
+ * Declared here so CompController stays modules/ does not
  * import infrastructure/ directly.  The fields must stay in sync with the
  * shape produced by the JWT strategy.
  */
@@ -22,7 +22,7 @@ export interface AuthenticatedUser {
  * controller handler.
  *
  * Lives in modules/comp/decorators/ so CompController can use it without
- * importing from infrastructure/ (RULE-04 compliance).
+ * importing from infrastructure/.
  *
  * Usage:
  * ```ts

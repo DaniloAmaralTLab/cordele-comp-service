@@ -21,13 +21,13 @@ import {
 } from './comp.tokens';
 import { DomainException } from '../../domain/shared/domain-exception';
 // ProblemJsonFilter is an infrastructure adapter; imported only in this spec file
-// so we can verify the filter → HTTP status mapping end-to-end (COMP-004 item 4).
+// so we can verify the filter → HTTP status mapping end-to-end.
 import { ProblemJsonFilter } from '../../infrastructure/comp/filters/problem-json.filter';
 
 /**
  * Unit tests for CompController.
  *
- * P5 (COMP-013): Security scenarios:
+ * Security scenarios:
  *   - 401 when no/invalid token (guard rejects)
  *   - 403 when token valid but scope missing (guard rejects)
  *   - 404 cross-tenant isolation (projetoId of another empresa → NotFoundException)
@@ -108,7 +108,7 @@ async function buildApp(
 // ============================================================================
 // Route registration — guard bypassed (pass)
 // ============================================================================
-describe('CompController — route registration (P1)', () => {
+describe('CompController — route registration', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -183,7 +183,7 @@ describe('CompController — route registration (P1)', () => {
 // ============================================================================
 // DI token coverage
 // ============================================================================
-describe('CompController — DI tokens (P1)', () => {
+describe('CompController — DI tokens', () => {
   it('exports all 11 DI tokens from comp.tokens', async () => {
     const tokens = await import('./comp.tokens');
     expect(tokens.COMP_METADADOS_REPO).toBeDefined();
@@ -201,9 +201,9 @@ describe('CompController — DI tokens (P1)', () => {
 });
 
 // ============================================================================
-// Security — P5 (COMP-013): 401 when no/invalid token
+// Security: 401 when no/invalid token
 // ============================================================================
-describe('CompController — security: 401 (P5)', () => {
+describe('CompController — security: 401', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -247,9 +247,9 @@ describe('CompController — security: 401 (P5)', () => {
 });
 
 // ============================================================================
-// Security — P5 (COMP-013): 403 when token valid but scope missing
+// Security: 403 when token valid but scope missing
 // ============================================================================
-describe('CompController — security: 403 insufficient scope (P5)', () => {
+describe('CompController — security: 403 insufficient scope', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
@@ -284,15 +284,15 @@ describe('CompController — security: 403 insufficient scope (P5)', () => {
 });
 
 // ============================================================================
-// Security — P5 (COMP-013): 404 cross-tenant isolation
+// Security: 404 cross-tenant isolation
 // ============================================================================
-describe('CompController — security: 404 cross-tenant isolation (P5)', () => {
+describe('CompController — security: 404 cross-tenant isolation', () => {
   /**
    * Cross-tenant isolation is enforced at the use-case / repository layer:
    * if `projetoId` belongs to another empresa, `findByProjetoId` returns null
    * and the use case throws `NotFoundException(404)`.
    *
-   * End-to-end 404 verification (real DB, two empresa schemas) is in P8 BDD.
+   * End-to-end 404 verification needs a real DB with two empresa schemas.
    */
   it('cross-tenant isolation contract is enforced at use-case/repository layer', () => {
     expect(true).toBe(true);
@@ -300,9 +300,9 @@ describe('CompController — security: 404 cross-tenant isolation (P5)', () => {
 });
 
 // ============================================================================
-// Security — P5: RequiredScopes metadata is declared on each handler
+// Security: RequiredScopes metadata is declared on each handler
 // ============================================================================
-describe('CompController — RequiredScopes metadata (P5)', () => {
+describe('CompController — RequiredScopes metadata', () => {
   it('each handler declares the required OAuth2 scope', async () => {
     // REQUIRED_SCOPES_KEY is the same string constant in both
     // modules/comp/decorators/require-scope.decorator.ts and
@@ -337,7 +337,7 @@ describe('CompController — RequiredScopes metadata (P5)', () => {
 });
 
 // ============================================================================
-// P2 — COMP-004 item 4: DomainException → HTTP 422 via ProblemJsonFilter
+// DomainException → HTTP 422 via ProblemJsonFilter
 // ============================================================================
 /**
  * Verifies that ProblemJsonFilter maps a DomainException carrying status=422
@@ -347,7 +347,7 @@ describe('CompController — RequiredScopes metadata (P5)', () => {
  * The mock UpdateMetadadosUseCase always throws DomainException('TITULO_INVALIDO', 422),
  * simulating what the aggregate would throw for a blank titulo.
  */
-describe('CompExceptionFilter HTTP status mapping (P2 — COMP-004 item 4)', () => {
+describe('CompExceptionFilter HTTP status mapping', () => {
   let app: INestApplication;
 
   beforeAll(async () => {

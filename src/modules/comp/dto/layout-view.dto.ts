@@ -34,7 +34,7 @@ export class LayoutOverrideViewDto {
 
   @ApiProperty({
     description:
-      'True when referenciaNo no longer resolves in the current manuscript content tree (D-K). ' +
+      'True when referenciaNo no longer resolves in the current manuscript content tree. ' +
       'Stale overrides are excluded from what PUB honours.',
     example: false,
   })
@@ -48,7 +48,7 @@ export class LayoutOverrideViewDto {
  *  - GET /api/comp/projetos/{projetoId}/layout
  *  - PUT /api/comp/projetos/{projetoId}/layout
  *
- * `materialized: false` means the row has never been persisted (synthesized default, D-M).
+ * `materialized: false` means the row has never been persisted (synthesized default).
  */
 export class LayoutViewDto {
   @ApiProperty({ description: 'Owning project UUID.', format: 'uuid' })
@@ -89,7 +89,7 @@ export class LayoutViewDto {
   readonly atualizadoEm!: string;
 
   @ApiProperty({
-    description: 'True when persisted at least once. False for a synthesized default (D-M).',
+    description: 'True when persisted at least once. False for a synthesized default.',
     example: true,
   })
   readonly materialized!: boolean;

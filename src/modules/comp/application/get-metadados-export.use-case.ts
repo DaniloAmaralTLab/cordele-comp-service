@@ -6,10 +6,10 @@ import { COMP_METADADOS_REPO } from '../comp.tokens';
 /**
  * DTO returned by GetMetadadosExportUseCase (in-process export port for PUB).
  *
- * Shape matches api-contract §6.1 minus `materialized` (§6.5):
+ * Shape matches api-contract §6.1 minus `materialized`:
  * PUB only reads persisted metadata — non-materialized defaults are not exported.
  *
- * RULE-04: defined in modules/ — not a Prisma model, not an infrastructure type.
+ * Defined in modules/ — not a Prisma model, not an infrastructure type.
  */
 export interface MetadadosRead {
   readonly projetoId: string;
@@ -24,7 +24,7 @@ export interface MetadadosRead {
 }
 
 /**
- * In-process export use case for the Metadados aggregate (COMP-016, D-I / G2).
+ * In-process export use case for the Metadados aggregate.
  *
  * Called by PUB at ePub export time — NOT the HTTP controller path.
  * The HTTP path (`GET .../metadados`) uses `GetMetadadosViewUseCase`, which
@@ -33,8 +33,8 @@ export interface MetadadosRead {
  *
  * Wiring: injected by token from CompModule; token declaration in comp.tokens.ts.
  *
- * RULE-04: does not import infrastructure/ directly; uses COMP_METADADOS_REPO token.
- * RULE-02: resides in modules/ — @nestjs/common decorators are permitted here.
+ * Does not import infrastructure/ directly; uses COMP_METADADOS_REPO token.
+ * Resides in modules/ — @nestjs/common decorators are permitted here.
  */
 @Injectable()
 export class GetMetadadosExportUseCase {

@@ -13,7 +13,7 @@ import { MetadataBatchResponseItemDto } from './dto/metadata-batch-response.dto'
 import type { ProjectMetadataPort } from '../../domain/ports/project-metadata.port';
 
 /**
- * HTTP adapter for the COMP batch metadata query (COMP-017 / api-contract §4.8).
+ * HTTP adapter for the COMP batch metadata query (api-contract §4.8).
  *
  * Exposes `ProjectMetadataPort.metadata()` as a REST endpoint so that PROJ
  * (and any future caller) can retrieve author metadata for a list of projects
@@ -35,11 +35,11 @@ import type { ProjectMetadataPort } from '../../domain/ports/project-metadata.po
  *  - `JwtAuthGuard` (APP_GUARD) enforces 401 on missing/invalid token.
  *  - `ScopeGuard` (APP_GUARD) enforces 403 when `comp:read` is absent.
  *  - `EmpresaContextInterceptor` (APP_INTERCEPTOR) populates the ALS tenant
- *    context from `request.user.empresaId` before the handler runs (RULE-07).
+ *    context from `request.user.empresaId` before the handler runs.
  *    The repository reads the slug from ALS — no explicit empresa arg needed.
  *
  * Multi-empresa: handled transparently by the ALS + PrismaEmpresaService chain.
- * RULE-04: does not import infrastructure/ directly. ✓
+ * Does not import infrastructure/ directly.
  */
 @ApiTags('comp')
 @ApiBearerAuth('bearer')
@@ -70,7 +70,7 @@ export class MetadataBatchController {
   @Post('batch')
   @RequiredScopes('comp:read')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Batch metadata query for a list of project IDs (COMP-017)' })
+  @ApiOperation({ summary: 'Batch metadata query for a list of project IDs' })
   @ApiOkResponse({
     type: [MetadataBatchResponseItemDto],
     description:

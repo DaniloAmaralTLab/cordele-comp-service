@@ -7,12 +7,11 @@
  *   3. The concrete adapter can be swapped (in-process → broker) without
  *      changing any use case.
  *
- * Pre-requisite for COMP-004, COMP-005, COMP-007 (MetadataUpdated /
- * LayoutUpdated events). messaging.enabled=false in this deployment — events
+ * Used for the MetadataUpdated / LayoutUpdated events. messaging.enabled=false in this deployment — events
  * stay in-process; no Kafka / RabbitMQ integration is wired.
  *
- * RULE-01: no @nestjs/* or @prisma/client — pure TypeScript port.
- * RULE-02: no NestJS decorators in this file.
+ * No @nestjs/* or @prisma/client — pure TypeScript port.
+ * No NestJS decorators in this file.
  */
 
 /**

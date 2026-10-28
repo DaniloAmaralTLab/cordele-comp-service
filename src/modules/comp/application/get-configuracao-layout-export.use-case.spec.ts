@@ -8,7 +8,7 @@ import type { ConfiguracaoLayoutRepositoryPort } from '../ports/configuracao-lay
 import type { ManuscriptContentPort } from '../ports/manuscript-content.port';
 
 /**
- * Unit spec for GetConfiguracaoLayoutExportUseCase (COMP-016, D-I / G2).
+ * Unit spec for GetConfiguracaoLayoutExportUseCase.
  *
  * Verifies the in-process export contract:
  *   - Stale override excluded: override whose nodeExists=false is NOT in result.

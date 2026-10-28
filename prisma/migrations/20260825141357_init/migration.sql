@@ -1,13 +1,4 @@
--- =============================================================================
--- Prisma migration: init
--- Service:   comp-service
--- Generated: 2026-08-25 by node-migration-generator.py (D-545)
--- Source:    comp-service/contracts/data-model.md (3 ```sql``` block(s))
---
--- GENERATED FILE. To change the DDL: edit contracts/data-model.md and re-run
---   python scripts/node-migration-generator.py stub --module <M> --name <name> --force
--- Then keep prisma/schema.prisma in sync via node-entity-generator.py.
--- =============================================================================
+-- Initial schema for comp-service: metadados, configuracao_layout, layout_override.
 
 -- schema: empresa
 CREATE TABLE metadados (

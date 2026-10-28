@@ -72,7 +72,7 @@ interface UploadedMulterFile {
 /**
  * HTTP adapter for the COMP bounded context.
  *
- * All 7 routes are nested under `/api/comp/projetos/:projetoId/` (api-contract D-J).
+ * All 7 routes are nested under `/api/comp/projetos/:projetoId/` .
  * Every COMP resource is a singleton child of a project (one Metadados, one
  * ConfiguracaoLayout per projetoId). Routes follow the house style PROJ set for
  * sub-resources.
@@ -81,20 +81,20 @@ interface UploadedMulterFile {
  * to use cases (injected by DI token), and shape the HTTP response. No business
  * rule lives here.
  *
- * Security (P5 — COMP-013):
+ * Security:
  *   - `JwtAuthGuard` registered as `APP_GUARD` in `app.module.ts` enforces 401
  *     (no/invalid token) and 403 (scope missing) without this file importing
- *     anything from `infrastructure/` (RULE-04 compliance — mirrors proj-service).
- *   - `@RequiredScopes` declares the OAuth2 scope per handler (SPEC-06 §2):
+ *     anything from `infrastructure/`.
+ *   - `@RequiredScopes` declares the OAuth2 scope per handler:
  *       comp:read  → GET endpoints
  *       comp:write → PUT / POST / DELETE endpoints
  *   - `@CurrentUser()` injects the JWT principal; `user.empresaId` is the empresa
  *     slug used for tenant routing (set by EmpresaContextMiddleware before the
- *     handler runs — RULE-07 compliance).
+ *     handler runs).
  *   - Cross-tenant isolation: repository queries filter by empresaId extracted
  *     from the JWT principal.
  *
- * RULE-04: this file does NOT import from `infrastructure/`. ✓
+ * This file does NOT import from `infrastructure/`.
  */
 @ApiTags('comp')
 @ApiBearerAuth('bearer')
@@ -127,13 +127,13 @@ export class CompController {
    * GET /api/comp/projetos/{projetoId}/metadados
    *
    * Returns editorial metadata. Returns a synthesized default (materialized=false)
-   * when none exists yet (lazy default — D-M / api-contract §4.1).
+   * when none exists yet (api-contract §4.1).
    *
    * Scope: comp:read
    */
   @Get('metadados')
   @RequiredScopes('comp:read')
-  @ApiOperation({ summary: 'Read editorial metadata (T05)' })
+  @ApiOperation({ summary: 'Read editorial metadata' })
   @ApiOkResponse({ type: MetadadosViewDto, description: 'Metadados or lazy default.' })
   @ApiNotFoundResponse({ description: 'projetoId not found in the active empresa.' })
   async getMetadados(
@@ -155,7 +155,7 @@ export class CompController {
    */
   @Put('metadados')
   @RequiredScopes('comp:write')
-  @ApiOperation({ summary: 'Upsert editorial metadata (T05)' })
+  @ApiOperation({ summary: 'Upsert editorial metadata' })
   @ApiOkResponse({ type: MetadadosViewDto, description: 'Persisted Metadados with materialized=true.' })
   @ApiNotFoundResponse({ description: 'projetoId not found in the active empresa.' })
   async updateMetadados(
@@ -185,7 +185,7 @@ export class CompController {
    *
    * Upload a cover image (multipart/form-data, field "file").
    * Validates MIME type and size; stores via FileStoragePort; updates capaUrl.
-   * Replaces any existing cover (api-contract §4.3, D-L).
+   * Replaces any existing cover (api-contract §4.3).
    *
    * Scope: comp:write
    */
@@ -193,7 +193,7 @@ export class CompController {
   @RequiredScopes('comp:write')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('file'))
-  @ApiOperation({ summary: 'Upload cover image (T05, D-L)' })
+  @ApiOperation({ summary: 'Upload cover image' })
   @ApiConsumes('multipart/form-data')
   @ApiBody({ type: UploadCapaRequestDto })
   @ApiCreatedResponse({ description: 'Cover stored; capaUrl and atualizadoEm returned.' })
@@ -229,7 +229,7 @@ export class CompController {
   @Delete('capa')
   @RequiredScopes('comp:write')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Remove cover image (T05)' })
+  @ApiOperation({ summary: 'Remove cover image' })
   @ApiNoContentResponse({ description: 'Cover removed (or no cover existed — idempotent).' })
   @ApiNotFoundResponse({ description: 'projetoId not found in the active empresa.' })
   async removeCapa(
@@ -248,13 +248,13 @@ export class CompController {
    * GET /api/comp/projetos/{projetoId}/layout
    *
    * Returns layout configuration. Returns a synthesized default (materialized=false)
-   * when none exists yet (api-contract §4.5, D-M).
+   * when none exists yet (api-contract §4.5).
    *
    * Scope: comp:read
    */
   @Get('layout')
   @RequiredScopes('comp:read')
-  @ApiOperation({ summary: 'Read layout configuration (T06)' })
+  @ApiOperation({ summary: 'Read layout configuration' })
   @ApiOkResponse({ type: LayoutViewDto, description: 'ConfiguracaoLayout or lazy default.' })
   @ApiNotFoundResponse({ description: 'projetoId not found in the active empresa.' })
   async getLayout(
@@ -269,15 +269,15 @@ export class CompController {
   /**
    * PUT /api/comp/projetos/{projetoId}/layout
    *
-   * Idempotent upsert of layout configuration. Validates typography bounds (§7.2),
-   * validates override references against the manuscript content tree (D-K),
-   * rejects tipo=em-branco (D-H). Emits LayoutUpdated (api-contract §4.6).
+   * Idempotent upsert of layout configuration. Validates typography bounds,
+   * validates override references against the manuscript content tree,
+   * rejects tipo=em-branco. Emits LayoutUpdated (api-contract §4.6).
    *
    * Scope: comp:write
    */
   @Put('layout')
   @RequiredScopes('comp:write')
-  @ApiOperation({ summary: 'Upsert layout configuration (T06, D-H)' })
+  @ApiOperation({ summary: 'Upsert layout configuration' })
   @ApiOkResponse({ type: LayoutViewDto, description: 'Persisted ConfiguracaoLayout with materialized=true.' })
   @ApiNotFoundResponse({ description: 'projetoId not found in the active empresa.' })
   async updateLayout(
@@ -317,13 +317,13 @@ export class CompController {
    * Assembles read-only manuscript content tree + ConfiguracaoLayout + overrides
    * into a single JSON payload for client-side rendering. Nothing is persisted.
    * Stale overrides (whose referenciaNo no longer resolves) are flagged and
-   * returned separately (api-contract §4.7, D-K).
+   * returned separately (api-contract §4.7).
    *
    * Scope: comp:read
    */
   @Get('preview-context')
   @RequiredScopes('comp:read')
-  @ApiOperation({ summary: 'Read preview data for client-side renderer (T06, D-K)' })
+  @ApiOperation({ summary: 'Read preview data for client-side renderer' })
   @ApiOkResponse({ type: PreviewContextDto, description: 'PreviewContext payload.' })
   @ApiNotFoundResponse({ description: 'projetoId not found in the active empresa.' })
   async getPreviewContext(

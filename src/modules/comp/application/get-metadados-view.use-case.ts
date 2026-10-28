@@ -10,16 +10,16 @@ export interface GetMetadadosViewInput {
 }
 
 /**
- * Returns editorial metadata for a project (COMP-004, api-contract §4.1, T05).
+ * Returns editorial metadata for a project (api-contract §4.1).
  *
- * Lazy default (D-M): when no row is found the use case returns a default
+ * Lazy default: when no row is found the use case returns a default
  * Metadados aggregate with `materialized=false` — it NEVER throws 404.
  *
  * The repository must already be scoped to the correct tenant schema via
  * EmpresaContext (wired in the persistence layer; the repository reads
  * EmpresaContext.slug set up by PrismaEmpresaService).
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/.
+ * This file is in modules/ and does NOT import from infrastructure/.
  */
 @Injectable()
 export class GetMetadadosViewUseCase {
@@ -38,7 +38,7 @@ export class GetMetadadosViewUseCase {
       return found;
     }
 
-    // Lazy default (D-M): synthesize placeholder without persisting.
+    // Lazy default: synthesize placeholder without persisting.
     this.logger.debug(
       `GetMetadadosView no row found — returning default projetoId=${input.projetoId}`,
     );

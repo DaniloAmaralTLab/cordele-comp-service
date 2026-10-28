@@ -5,7 +5,7 @@ import { ArrayMaxSize, IsArray, IsUUID } from 'class-validator';
  * Request body for `POST /api/v1/comp/metadata/batch`.
  *
  * Used by PROJ's `CompProjectMetadataAdapter` to fetch author metadata for a
- * list of project IDs in a single HTTP call (COMP-017).
+ * list of project IDs in a single HTTP call.
  *
  * Validation:
  *  - `projetoIds` must be an array of valid UUID v4 strings.

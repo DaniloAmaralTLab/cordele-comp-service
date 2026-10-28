@@ -9,12 +9,12 @@ export interface GetLayoutViewInput {
 }
 
 /**
- * Returns layout configuration for a project (T06, api-contract §4.5).
+ * Returns layout configuration for a project (api-contract §4.5).
  *
- * Lazy default (D-M): when no row is found the use case returns a default
+ * Lazy default: when no row is found the use case returns a default
  * ConfiguracaoLayout with `materialized=false` — it NEVER throws 404.
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/.
+ * This file is in modules/ and does NOT import from infrastructure/.
  */
 @Injectable()
 export class GetLayoutViewUseCase {
@@ -33,7 +33,7 @@ export class GetLayoutViewUseCase {
       return found;
     }
 
-    // Lazy default (D-M): return placeholder without persisting.
+    // Lazy default: return placeholder without persisting.
     this.logger.debug(`GetLayoutView no row found — returning default projetoId=${input.projetoId}`);
     return ConfiguracaoLayout.createDefault(input.projetoId);
   }

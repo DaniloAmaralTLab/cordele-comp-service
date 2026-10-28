@@ -11,7 +11,7 @@ export interface RemoveCoverInput {
 }
 
 /**
- * Removes the cover image for a project (COMP-005, T05, api-contract §4.4).
+ * Removes the cover image for a project (api-contract §4.4).
  *
  * Idempotent:
  *   - When no Metadados row exists → no-op (nothing to remove).
@@ -25,7 +25,7 @@ export interface RemoveCoverInput {
  *
  * Does not delete the Metadados row — only clears capaUrl within it.
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/ repositories.
+ * This file is in modules/ and does NOT import from infrastructure/ repositories.
  */
 @Injectable()
 export class RemoveCoverUseCase {

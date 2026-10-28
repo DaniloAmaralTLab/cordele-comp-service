@@ -6,7 +6,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
  * Only projects that have a persisted `Metadados` row in the current empresa
  * are included. Projects with no row are **omitted** — absence signals
  * "no metadata" to the consumer (PROJ's CompProjectMetadataAdapter) rather
- * than returning an entry with all-null fields (COMP-017, api-contract §4.8).
+ * than returning an entry with all-null fields (api-contract §4.8).
  *
  * `autor` is a project-level editorial field and may be `null` when the user
  * has persisted a `Metadados` row but left the author blank (the consumer

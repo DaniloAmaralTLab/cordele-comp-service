@@ -29,7 +29,7 @@ interface RequestLogEntry {
  *  - `durationMs`     — wall-clock time from middleware entry to response finish
  *
  * Uses the NestJS `Logger` — same pattern as every other class in COMP.
- * RULE-08: no console.log.
+ * No console.log.
  *
  * Registration order (in `AppModule.configure`):
  *   1. CorrelationMiddleware  → sets req.correlationId

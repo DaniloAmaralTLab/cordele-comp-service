@@ -20,7 +20,7 @@ import { COMP_DATABASE_HEALTH_PORT } from '../../modules/comp/ports/database-hea
 /**
  * Global DI bindings module for the COMP bounded context.
  *
- * Why this module exists (FIX CRITICO — boot DI crash):
+ * Why this module exists (boot DI crash):
  * NestJS DI visibility flows only from child → parent (via exports), never
  * parent → child. Providers declared in AppModule.providers are NOT
  * automatically visible to providers declared inside CompModule (or any
@@ -30,10 +30,9 @@ import { COMP_DATABASE_HEALTH_PORT } from '../../modules/comp/ports/database-hea
  * This module applies the same pattern already used by PersistenceModule:
  * declare the infrastructure adapters as @Global() providers + exports so
  * that CompModule's use-cases, CompHealthService, and any future module can
- * inject the port tokens without importing infrastructure/ directly
- * (RULE-04 compliant).
+ * inject the port tokens without importing infrastructure/ directly.
  *
- * Bindings moved here from AppModule.providers (P3/P4/P5/P7 legacy placement):
+ * Bindings moved here from AppModule.providers:
  *   COMP_METADADOS_REPO          → PrismaMetadadosRepository (useExisting)
  *   COMP_LAYOUT_REPO             → PrismaConfiguracaoLayoutRepository (useExisting)
  *   COMP_MANUSCRIPT_CONTENT_PORT → ManuscriptContentStubAdapter (useClass)
@@ -47,7 +46,7 @@ import { COMP_DATABASE_HEALTH_PORT } from '../../modules/comp/ports/database-hea
  * registered in the global DI container, so useExisting resolves correctly
  * without double-registering.
  *
- * RULE-05: this module does NOT import from modules/ at runtime (only imports
+ * This module does NOT import from modules/ at runtime (only imports
  * token constants, which are plain Symbol/string values — not NestJS providers).
  */
 @Global()
@@ -56,15 +55,14 @@ import { COMP_DATABASE_HEALTH_PORT } from '../../modules/comp/ports/database-hea
     // --- Infrastructure adapters (concrete classes) ---
     // useClass adapters: instantiated here (not registered anywhere else).
     { provide: COMP_MANUSCRIPT_CONTENT_PORT, useClass: ManuscriptContentStubAdapter },
-    // INT-COMP-001: swap ManuscriptContentStubAdapter → ManuscritoQueryHttpAdapter
-    //               once IMP scaffold is available — only this file changes.
+    // Stub used while there is no integration with the import service.
 
     { provide: COMP_FILE_STORAGE_PORT, useClass: DiskFileStorageAdapter },
-    // INT-COMP-002: swap DiskFileStorageAdapter → S3FileStorageAdapter post-POC.
+    // S3FileStorageAdapter is a placeholder for a future cloud storage option.
 
     { provide: COMP_DATABASE_HEALTH_PORT, useClass: PrismaDatabaseHealthAdapter },
     // CompHealthService (modules/) injects COMP_DATABASE_HEALTH_PORT instead of
-    // PrismaService directly — RULE-04 compliant.
+    // PrismaService directly.
 
     { provide: COMP_EVENT_EMITTER, useClass: InProcessEventEmitterAdapter },
     // messaging.enabled=false — events dispatched in-process via Node EventEmitter.

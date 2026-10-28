@@ -4,11 +4,11 @@ import { dirname, join } from 'path';
 import type { FileStoragePort } from '../../../modules/comp/ports/file-storage.port';
 
 /**
- * Local-disk implementation of FileStoragePort (COMP-015 / P4).
+ * Local-disk implementation of FileStoragePort.
  *
  * Stores cover buffers on the local filesystem under COMP_STORAGE_DIR.
  * The storage URL returned is a file:// reference that downstream consumers
- * (e.g. the BDD suite) can resolve locally. In production, this adapter is
+ * (e.g. tests) can resolve locally. In production, this adapter is
  * replaced by S3FileStorageAdapter without any changes to the use cases.
  *
  * Environment variables:
@@ -22,9 +22,9 @@ import type { FileStoragePort } from '../../../modules/comp/ports/file-storage.p
  *   delete(key)        — removes the file at COMP_STORAGE_DIR/{key};
  *                         silences ENOENT (idempotent).
  *
- * RULE-06: outbound file-system access adapter — lives in infrastructure/comp/storage. ✓
- * RULE-01/02: no @prisma/client or @nestjs/common entity imports. ✓
- * RULE-08: no console.log. ✓
+ * Outbound file-system access adapter — lives in infrastructure/comp/storage.
+ * No @prisma/client or @nestjs/common entity imports.
+ * No console.log.
  */
 @Injectable()
 export class DiskFileStorageAdapter implements FileStoragePort {

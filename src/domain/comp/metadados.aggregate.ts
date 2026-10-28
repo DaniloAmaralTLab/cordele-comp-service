@@ -25,12 +25,12 @@ export interface MetadadosProps {
 }
 
 /**
- * Aggregate root for editorial identity of a project (data-model §2.1).
+ * Aggregate root for editorial identity of a project.
  *
- * Pure TypeScript — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript — no @nestjs/* or @prisma/client imports.
  * One instance per project (UNIQUE projeto_id in DB).
  *
- * Lazy default (D-M): `materialized=false` when the row has not been persisted
+ * Lazy default: `materialized=false` when the row has not been persisted
  * yet. GetMetadadosUseCase returns a default when none is found — never 404.
  *
  * Invariants (titulo, autor, idioma) are enforced only when `materialized=true`.
@@ -39,7 +39,7 @@ export interface MetadadosProps {
  *
  * The `empresaSlug` field carries the owning tenant identifier so repository
  * adapters can apply `SET search_path = emp_{slug}` without coupling the
- * use case to infrastructure (RULE-07).
+ * use case to infrastructure.
  *
  * Validation is delegated to `IdiomaVO` and `NonBlankText` value objects —
  * no inline validation logic.
@@ -57,7 +57,7 @@ export class Metadados {
   readonly atualizadoEm: Date;
   /** Owning tenant — used by the repository adapter for schema routing. */
   readonly empresaSlug: string;
-  /** false when synthesized from defaults (D-M); true when persisted at least once. */
+  /** false when synthesized from defaults; true when persisted at least once. */
   readonly materialized: boolean;
 
   constructor(props: MetadadosProps) {
@@ -87,7 +87,7 @@ export class Metadados {
   /**
    * Synthesizes a non-materialized placeholder for a project with a known tenant.
    *
-   * Used by GetMetadadosUseCase when no row is found (D-M).
+   * Used by GetMetadadosUseCase when no row is found.
    * The placeholder is never persisted — it exists only in the response.
    */
   static defaultsFor(projetoId: string, empresaSlug: string): Metadados {
@@ -104,7 +104,7 @@ export class Metadados {
   /**
    * Synthesizes a non-materialized placeholder for a project.
    *
-   * Convenience factory matching the COMP-003 spec API. The `empresaSlug` is set
+   * Convenience factory. The `empresaSlug` is set
    * to the sentinel `'_default_'` (a valid non-empty string; the placeholder is
    * never persisted). When the owning tenant is known, prefer
    * `defaultsFor(projetoId, slug)`.
@@ -179,13 +179,12 @@ export class Metadados {
   /**
    * Returns `true` when the given fields match the current aggregate state.
    *
-   * Used by `UpdateMetadadosUseCase` to detect idempotent no-op updates
-   * (COMP-004 — re-sending an identical body should not call `upsert` again).
+   * Used by `UpdateMetadadosUseCase` to detect idempotent no-op updates.
    *
    * Only the five editable metadata fields are compared; `capaUrl`, `id`,
    * `atualizadoEm`, and `materialized` are not part of this comparison.
    *
-   * Pure method — no side effects, no external imports (RULE-01/02).
+   * Pure method — no side effects, no external imports.
    */
   hasSameContentAs(fields: {
     titulo: string;

@@ -34,7 +34,7 @@ import { PrismaEmpresaService } from '../../persistence/prisma-empresa.service';
  * `request.user.empresaId` is set by `JwtAuthGuard.canActivate()` AFTER Passport's
  * `AuthGuard('jwt')` verifies the RS256/JWKS JWT signature. This interceptor runs
  * AFTER the guard (NestJS lifecycle: Middleware → Guard → Interceptor → Handler), so
- * the slug is always from a cryptographically verified source (RULE-07 compliant).
+ * the slug is always from a cryptographically verified source.
  *
  * Routes marked `@Public()` receive no `request.user`; the interceptor passes them
  * through without touching the ALS.
@@ -43,10 +43,9 @@ import { PrismaEmpresaService } from '../../persistence/prisma-empresa.service';
  *
  * Registered globally as `APP_INTERCEPTOR` in `AppModule` (composition root) so
  * every authenticated route gets tenant context without `CompModule` importing
- * `infrastructure/` directly (RULE-04 compliant).
+ * `infrastructure/` directly.
  *
  * @see src/infrastructure/persistence/prisma-empresa.service.ts
- * @see docs/architecture/shared/multi-empresa.md
  */
 @Injectable()
 export class EmpresaContextInterceptor implements NestInterceptor {

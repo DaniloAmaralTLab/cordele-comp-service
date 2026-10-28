@@ -5,7 +5,7 @@ import type { DomainEventEmitter } from '../ports/domain-event-emitter.port';
 import { DomainException } from '../../../domain/shared/domain-exception';
 
 /**
- * Unit spec for UpdateMetadadosUseCase (COMP-004).
+ * Unit spec for UpdateMetadadosUseCase.
  *
  * Repository and DomainEventEmitter are mocked with jest.fn() — no DB, no Nest bootstrap.
  *
@@ -172,7 +172,7 @@ describe('UpdateMetadadosUseCase', () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Idempotency (COMP-004 / SPEC-05): identical payload → no-op
+  // Idempotency: identical payload → no-op
   // ---------------------------------------------------------------------------
 
   it('is a no-op when the payload is identical to the persisted state (upsert not called)', async () => {

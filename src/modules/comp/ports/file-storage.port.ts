@@ -1,15 +1,15 @@
 /**
- * Outbound port for binary file storage (cover images) — COMP-005.
+ * Outbound port for binary file storage (cover images)
  *
  * The cover binary is never stored in the DB row — only a reference URL is kept
- * in metadados.capaUrl (ADR-003, D-L). COMP accesses covers exclusively through
+ * in metadados.capaUrl. COMP accesses covers exclusively through
  * this port.
  *
  * Concrete adapters:
  *   - DiskFileStorageAdapter (local FS): for POC / local development.
  *   - S3FileStorageAdapter (post-POC placeholder): cloud storage.
  *
- * Pure TypeScript interface — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript interface — no @nestjs/* or @prisma/client imports.
  */
 export interface FileStoragePort {
   /**

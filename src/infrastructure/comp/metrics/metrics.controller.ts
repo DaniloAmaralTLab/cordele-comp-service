@@ -5,8 +5,7 @@ import { Public } from '../auth/jwt-auth.guard';
 import { CompMetricsService } from './comp-metrics.service';
 
 /**
- * Prometheus-compatible metrics scrape endpoint for the COMP bounded context
- * (COMP-019 / observability gap).
+ * Prometheus-compatible metrics scrape endpoint for the COMP bounded context.
  *
  * Route: GET /api/v1/comp/metrics
  *
@@ -24,8 +23,8 @@ import { CompMetricsService } from './comp-metrics.service';
  * `CompMetricsService` is provided globally by `CompInfraBindingsModule`
  * (@Global) — no explicit import needed in `MetricsModule`.
  *
- * RULE-04: this controller lives in infrastructure/ and does NOT import modules/.
- * RULE-08: no console.log — uses Nest Logger (none needed here; counts are safe).
+ * This controller lives in infrastructure/ and does NOT import modules/.
+ * No console.log — uses Nest Logger (none needed here; counts are safe).
  */
 @ApiTags('ops')
 @Controller({ path: 'comp/metrics', version: '1' })

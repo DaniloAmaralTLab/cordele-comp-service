@@ -2,10 +2,10 @@
  * Base class for domain rule violations in the COMP bounded context.
  *
  * Carries a machine-readable `code` and an HTTP `status` so the infrastructure
- * layer (CompExceptionFilter, P7) can map it to RFC 7807 without coupling
+ * layer (ProblemJsonFilter) can map it to RFC 7807 without coupling
  * business rules to HTTP semantics.
  *
- * Pure TypeScript — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript — no @nestjs/* or @prisma/client imports.
  */
 export class DomainException extends Error {
   constructor(

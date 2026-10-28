@@ -35,12 +35,12 @@ export interface UpdateLayoutInput {
 }
 
 /**
- * Idempotent upsert of layout configuration (T06, api-contract §4.6).
+ * Idempotent upsert of layout configuration (api-contract §4.6).
  *
  * Rules:
- *   - tipo='em-branco' overrides are rejected by LayoutOverride constructor (422, D-H).
+ *   - tipo='em-branco' overrides are rejected by LayoutOverride constructor.
  *   - Each override's referenciaNo is validated against ManuscriptContentPort.getContentTree.
- *     Overrides whose referenciaNo is absent are marked stale (D-K).
+ *     Overrides whose referenciaNo is absent are marked stale.
  *   - When ManuscriptContentPort returns null (no manuscript yet) ALL overrides
  *     are marked stale (defensive: cannot validate referenciaNo without the tree).
  *   - Only active (non-stale) overrides are counted by PUB; the repository persists
@@ -49,7 +49,7 @@ export interface UpdateLayoutInput {
  * Concurrency: DB UNIQUE(projeto_id) serializes concurrent writes —
  * no optimistic lock needed (per-project singleton).
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/.
+ * This file is in modules/ and does NOT import from infrastructure/.
  */
 @Injectable()
 export class UpdateLayoutUseCase {
@@ -67,7 +67,7 @@ export class UpdateLayoutUseCase {
   async execute(input: UpdateLayoutInput): Promise<ConfiguracaoLayout> {
     this.logger.debug(`UpdateLayout projetoId=${input.projetoId}`);
 
-    // Build LayoutOverride entities — constructor rejects tipo='em-branco' (D-H, 422).
+    // Build LayoutOverride entities — constructor rejects tipo='em-branco'.
     const rawOverrides: LayoutOverride[] = (input.overrides ?? []).map(
       (o) =>
         new LayoutOverride({
@@ -78,7 +78,7 @@ export class UpdateLayoutUseCase {
         }),
     );
 
-    // Validate override referenciaNo against the manuscript content tree (D-K).
+    // Validate override referenciaNo against the manuscript content tree.
     let existingNodeIds = new Set<string>();
     if (rawOverrides.length > 0) {
       const tree = await this.manuscriptContent.getContentTree(input.projetoId);
@@ -92,7 +92,7 @@ export class UpdateLayoutUseCase {
 
     const existing = await this.layoutRepo.findByProjetoId(input.projetoId);
 
-    // Idempotency (COMP-007, SPEC-05): if the persisted state is already identical
+    // Idempotency: if the persisted state is already identical
     // to the incoming payload (typography + override set, ignoring runtime stale
     // flags), skip the upsert and the LayoutUpdated event entirely (no-op).
     // The no-op path still re-applies stale flags so the response is accurate.
@@ -103,14 +103,14 @@ export class UpdateLayoutUseCase {
 
     const base = existing ?? ConfiguracaoLayout.createDefault(input.projetoId);
 
-    // RULE-03: the application service is the only place that coordinates
+    // The application service is the only place that coordinates
     // multi-step persistence. The aggregate.update() enforces all invariants
     // before we hand off to the repository.
     const updated = base.update(input.tipografia, validatedOverrides);
 
     const persisted = await this.layoutRepo.upsert(updated);
 
-    // Emit LayoutUpdated after a real (mutating) upsert (COMP-007).
+    // Emit LayoutUpdated after a real (mutating) upsert.
     this.eventEmitter.emit('LayoutUpdated', {
       projetoId: input.projetoId,
       ...(persisted.empresaSlug ? { empresaSlug: persisted.empresaSlug } : {}),
@@ -119,14 +119,14 @@ export class UpdateLayoutUseCase {
     // The `stale` flag is a runtime concept computed above against the content tree.
     // It is NOT stored in the DB (no stale column in layout_override) — the mapper
     // always returns stale=false when reading back from DB. Re-apply the computed
-    // stale flags here so the response reflects the actual validation result (D-K).
+    // stale flags here so the response reflects the actual validation result.
     return this.applyStaleFlags(persisted, validatedOverrides);
   }
 
   /**
    * Returns a copy of `layout` with the stale flags from `validatedOverrides`
    * re-applied. Used after both real upserts and no-op idempotency paths so
-   * the caller always receives the correct runtime stale state (D-K).
+   * the caller always receives the correct runtime stale state.
    */
   private applyStaleFlags(
     layout: ConfiguracaoLayout,

@@ -6,7 +6,7 @@ import type { FileStoragePort } from '../ports/file-storage.port';
 import { COMP_METADADOS_REPO, COMP_FILE_STORAGE_PORT } from '../comp.tokens';
 
 /**
- * Application use case implementing `CompositionErasurePort` (COMP-017).
+ * Application use case implementing `CompositionErasurePort`.
  *
  * Idempotent LGPD erasure of all COMP data for a project:
  *  1. Fetch metadados to capture `capaUrl` before deletion.
@@ -19,15 +19,12 @@ import { COMP_METADADOS_REPO, COMP_FILE_STORAGE_PORT } from '../comp.tokens';
  * `MetadadosRepository.delete` uses `deleteMany` (silences not-found) and
  * `FileStoragePort.delete` is idempotent by contract.
  *
- * Exported from CompModule via `COMP_COMPOSITION_ERASURE_PORT` for in-process
- * consumption by PROJ (LGPD erasure workflow). No HTTP call involved.
- *
  * Multi-empresa: schema routing is handled by the repository adapter via
- * AsyncLocalStorage (RULE-07). Callers must execute in a request context
+ * AsyncLocalStorage. Callers must execute in a request context
  * where EmpresaContext is set (populated by EmpresaContextMiddleware).
  *
- * RULE-01/02: no @prisma/client in this class — delegates to port interfaces.
- * RULE-04: does not import from infrastructure/ directly.
+ * No @prisma/client in this class — delegates to port interfaces.
+ * Does not import from infrastructure/ directly.
  */
 @Injectable()
 export class CompositionErasureUseCase implements CompositionErasurePort {

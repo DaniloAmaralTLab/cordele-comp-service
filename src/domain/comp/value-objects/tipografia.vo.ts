@@ -3,11 +3,11 @@ import { DomainException } from '../../shared/domain-exception';
 /**
  * Typography bounds value objects and validators for the COMP domain.
  *
- * All VOs are plain classes — no @nestjs/* or @prisma/client (RULE-01/02).
- * Bounds mirror data-model §2.2 CHECK constraints (DB is the backstop; domain
- * is the first line of defence — defense-in-depth, D-M).
+ * All VOs are plain classes — no @nestjs/* or @prisma/client.
+ * Bounds mirror the migration CHECK constraints (DB is the backstop; domain
+ * is the first line of defence — defense-in-depth).
  *
- * COMP-006: extracted to a reusable module so ConfiguracaoLayout aggregate and
+ * Extracted to a reusable module so ConfiguracaoLayout aggregate and
  * any future aggregates can share the same validated types.
  */
 

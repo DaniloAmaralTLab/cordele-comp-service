@@ -1,5 +1,5 @@
 /**
- * CompositionErasureUseCase — unit tests (COMP-017).
+ * CompositionErasureUseCase — unit tests.
  *
  * Tests the application-layer purge logic using jest.fn() mocks for both
  * MetadadosRepository and FileStoragePort. No DB or storage I/O involved.

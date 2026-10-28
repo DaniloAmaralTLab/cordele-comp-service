@@ -24,7 +24,7 @@ export interface UploadCoverOutput {
   readonly atualizadoEm: Date;
 }
 
-/** Allowed MIME types for cover images (COMP-005 / SPEC-02). */
+/** Allowed MIME types for cover images. */
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
 /** Extension map for allowed MIME types. */
@@ -38,21 +38,21 @@ const MIME_EXTENSIONS: Readonly<Record<string, string>> = {
 const DEFAULT_MAX_BYTES = 10_485_760;
 
 /**
- * Stores a cover image and updates capaUrl in Metadados (COMP-005, T05, D-L, api-contract §4.3).
+ * Stores a cover image and updates capaUrl in Metadados (api-contract §4.3).
  *
  * Design:
  *   - Validates MIME type before any storage call (415 if unsupported).
  *   - Validates file size against COMP_COVER_MAX_BYTES (413 if too large).
- *   - Cover binary is stored via FileStoragePort — never in the DB row (ADR-003).
+ *   - Cover binary is stored via FileStoragePort — never in the DB row.
  *   - Storage key: `{empresaSlug}/{projetoId}/capa.{ext}` derived from the MIME type.
  *   - A second upload replaces the previous cover (idempotent per project).
  *   - The use case stores the file BEFORE updating the DB row so that a DB failure
  *     leaves no dangling capaUrl (best-effort; a file GC job handles orphaned files).
- *   - Emits 'MetadataUpdated' post-persist (COMP-004/005 event contract).
+ *   - Emits 'MetadataUpdated' post-persist.
  *   - Increments comp_cover_rejection_total{reason} on rejection and
- *     comp_cover_upload_total on success (COMP-019).
+ *     comp_cover_upload_total on success.
  *
- * RULE-04: this file is in modules/ and does NOT import from infrastructure/ repositories.
+ * This file is in modules/ and does NOT import from infrastructure/ repositories.
  */
 @Injectable()
 export class UploadCoverUseCase {
@@ -72,7 +72,7 @@ export class UploadCoverUseCase {
   async execute(input: UploadCoverInput): Promise<UploadCoverOutput> {
     this.logger.debug(`UploadCover projetoId=${input.projetoId} mimeType=${input.mimeType}`);
 
-    // ── Validation (COMP-005 / SPEC-02) ───────────────────────────────────────
+    // ── Validation ───────────────────────────────────────
     // Both checks happen BEFORE any FileStoragePort call (defense-in-depth).
 
     if (!ALLOWED_MIME_TYPES.includes(input.mimeType as typeof ALLOWED_MIME_TYPES[number])) {

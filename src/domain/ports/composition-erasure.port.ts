@@ -1,8 +1,8 @@
 /**
  * Inbound port for LGPD data erasure of all composition data for a project.
- * Exported by CompModule for in-process consumption by PROJ (erasure workflow).
+ * Exported by CompModule.
  *
- * Pure TypeScript interface — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript interface — no @nestjs/* or @prisma/client imports.
  * The injection token is declared in comp.tokens.ts (COMP_COMPOSITION_ERASURE_PORT).
  */
 export interface CompositionErasurePort {
@@ -20,7 +20,7 @@ export interface CompositionErasurePort {
    * When no row exists the method returns successfully.
    *
    * Multi-empresa: schema routing is handled by PrismaEmpresaService via the
-   * current empresa context (AsyncLocalStorage, RULE-07). Callers must be in a
+   * current empresa context (AsyncLocalStorage). Callers must be in a
    * request context where EmpresaContext is populated.
    *
    * @param projetoId  UUID of the project whose COMP data should be erased.

@@ -10,8 +10,8 @@ into valid ePub publications. The platform is split into four NestJS services:
 | pub-service  | Assemble and validate the ePub; publication history |
 | proj-service | Editorial project lifecycle and status |
 
-This repository contains **comp-service**. Contracts of the services it talks to live
-under `docs/services/*/contracts/`.
+This repository contains **comp-service**. Its own API contract and the contracts of the
+import and project services it calls are under `docs/services/`.
 
 ## Layout
 
@@ -20,7 +20,7 @@ src/modules/          NestJS feature modules: controllers, DTOs, use cases
 src/domain/           entities, value objects, ports — no framework imports
 src/infrastructure/   Prisma repositories, HTTP adapters, auth
 prisma/               schema and migrations
-docs/                 service spec, contracts, ADRs, standards, issues
+docs/                 API contracts
 ```
 
 ## Development (Node 22)

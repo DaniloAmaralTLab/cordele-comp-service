@@ -16,16 +16,16 @@ export const CORRELATION_ID_HEADER = 'x-correlation-id';
  *  - The correlation id is stored in `request.correlationId` so downstream
  *    handlers (`ProblemJsonFilter`, `RequestLoggerMiddleware`) can access it.
  *
- * ALS propagation (COMP-018):
+ * ALS propagation:
  *  - `EmpresaContextMiddleware` (runs immediately after this middleware) forwards
  *    `req.correlationId` into the `AsyncLocalStorage` context, making it
  *    available to every provider via `EmpresaContextService.get()?.correlationId`
  *    for the full lifetime of the request — no explicit parameter passing needed.
  *
  * MUST be registered before `EmpresaContextMiddleware` and any exception filter
- * to guarantee `traceId` availability in error responses (COMP-018).
+ * to guarantee `traceId` availability in error responses.
  *
- * RULE-08: no console.log — uses Nest Logger.
+ * No console.log — uses Nest Logger.
  *
  * @see src/infrastructure/auth/empresa-context.middleware.ts
  * @see src/infrastructure/comp/filters/problem-json.filter.ts

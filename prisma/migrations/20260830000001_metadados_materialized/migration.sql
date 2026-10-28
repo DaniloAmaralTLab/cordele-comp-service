@@ -1,8 +1,4 @@
 -- =============================================================================
--- Migration: metadados_materialized
--- Service:   comp-service
--- Date:      2026-08-30
---
 -- Adds the `materialized` column to the `metadados` table and relaxes the
 -- overly strict DB-level CHECK constraints for `titulo` and `autor`.
 --
@@ -11,7 +7,7 @@
 --   UploadCoverUseCase before any PUT /metadados call) from a fully materialized
 --   row (created by UpdateMetadadosUseCase). Without this column the Prisma mapper
 --   always returns `materialized=true` for every DB row, breaking the lazy-default
---   contract (D-M).
+--   contract.
 --
 --   The CHECK constraints `chk_metadados_titulo` and `chk_metadados_autor` are
 --   dropped because they apply to ALL rows, including non-materialized ones that

@@ -14,10 +14,10 @@ import {
 import { Type } from 'class-transformer';
 
 /**
- * Image-alignment override payload (write shape — api-contract §6.3, D-H).
+ * Image-alignment override payload (write shape — api-contract §6.3).
  *
  * On write, `id` and `stale` are not supplied; they are server-assigned/computed.
- * `tipo = em-branco` is reserved (post-POC) and the API rejects it with 422 (D-H).
+ * `tipo = em-branco` is reserved (post-POC) and the API rejects it with 422.
  */
 export class LayoutOverrideInputDto {
   @ApiProperty({
@@ -30,7 +30,7 @@ export class LayoutOverrideInputDto {
 
   @ApiProperty({
     description:
-      'Override type. Only "imagem" is accepted in the POC (D-H); "em-branco" yields 422.',
+      'Override type. Only "imagem" is accepted in this version; "em-branco" yields 422.',
     enum: ['imagem', 'em-branco'],
     example: 'imagem',
   })
@@ -53,10 +53,10 @@ export class LayoutOverrideInputDto {
 }
 
 /**
- * Payload for upserting layout configuration (T06).
+ * Payload for upserting layout configuration.
  *
  * Maps to PUT /api/comp/projetos/{projetoId}/layout (api-contract §4.6).
- * Typography bounds are enforced by the domain (§7.2):
+ * Typography bounds are enforced by the domain:
  *  fonteCorpoTamanho: 12–20px
  *  espacamentoLinha: 1.2–2.0
  *  margemLateral: 10–40mm
@@ -108,7 +108,7 @@ export class UpdateLayoutDto {
   readonly h3Tamanho!: number;
 
   @ApiPropertyOptional({
-    description: 'Image-alignment overrides (D-H). Full set replaces any existing overrides.',
+    description: 'Image-alignment overrides. Full set replaces any existing overrides.',
     type: [LayoutOverrideInputDto],
   })
   @IsOptional()

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 /**
- * Canonical metric names emitted by the COMP bounded context (COMP-019).
+ * Canonical metric names emitted by the COMP bounded context.
  *
  * Naming convention: `comp_<resource>_<verb>_total` (Prometheus counter style).
  */
@@ -38,7 +38,7 @@ function makeKey(metric: string, labels?: Record<string, string>): string {
 }
 
 /**
- * In-process operation counter for the COMP bounded context (COMP-019 refactor).
+ * In-process operation counter for the COMP bounded context.
  *
  * Replaces the old `CompMetricsService` (7 plain operation counters, no labels)
  * with a generic `increment(metric, labels?)` API that supports Prometheus-style
@@ -51,8 +51,8 @@ function makeKey(metric: string, labels?: Record<string, string>): string {
  *   - `getSnapshot()` returns a shallow copy (Record) so callers cannot mutate
  *     the live counters.
  *
- * RULE-04/05: lives in infrastructure/comp/metrics/ — no modules/ imports. ✓
- * RULE-08: no console.log — uses Nest Logger for debug traces.
+ * Lives in infrastructure/comp/metrics/ — no modules/ imports.
+ * No console.log — uses Nest Logger for debug traces.
  */
 @Injectable()
 export class CompMetricsService {

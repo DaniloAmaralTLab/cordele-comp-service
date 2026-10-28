@@ -31,14 +31,13 @@ export const Public = (): MethodDecorator & ClassDecorator =>
  * only for principals holding the `empresa-admin` role).
  *
  * Scope enforcement is delegated to `ScopeGuard` which must be registered
- * AFTER this guard in the APP_GUARD chain — SPEC-06 §2.
+ * AFTER this guard in the APP_GUARD chain
  *
  * Responses:
  *   401 — no token or expired/invalid token
  *   403 — valid token but cross-empresa override denied or no empresa claim
  *
  * @see src/infrastructure/comp/auth/scope.guard.ts
- * @see docs/architecture/backend/services/comp-service/spec/backend/SPEC-06-security.md
  */
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {

@@ -9,17 +9,17 @@ import type { DomainEventEmitter } from '../../../modules/comp/ports/domain-even
  * Every listener registered for a given event name is called with the payload.
  * Listener errors are caught and logged — they never propagate to the caller.
  *
- * This adapter satisfies the pre-requisite for COMP-004 (MetadataUpdated),
- * COMP-005 (UploadCapa) and COMP-007 (LayoutUpdated). Use cases emit through
+ * Used for MetadataUpdated (metadata and cover changes) and LayoutUpdated.
+ * Use cases emit through
  * the `COMP_EVENT_EMITTER` token and are completely decoupled from the
  * transport (in-process today; a broker adapter can replace this class
  * by swapping the token binding in AppModule without touching any use case).
  *
  * messaging.enabled=false in the current deployment — no Kafka / RabbitMQ.
  *
- * RULE-05: infrastructure/ does not import modules/; the import here is for
+ * infrastructure/ does not import modules/; the import here is for
  *          the port interface only (type-level, no runtime dependency on modules/).
- * RULE-08: no console.log — uses NestJS Logger.
+ * No console.log — uses NestJS Logger.
  */
 @Injectable()
 export class InProcessEventEmitterAdapter implements DomainEventEmitter {

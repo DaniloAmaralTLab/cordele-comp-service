@@ -10,7 +10,7 @@ import {
 
 /**
  * Canonical defaults for a new (non-materialized) ConfiguracaoLayout.
- * Values match data-model §2.2 DEFAULT column values.
+ * Values match the migration DEFAULT column values.
  */
 const DEFAULTS = {
   fonte_corpo_familia: 'serif' as const,
@@ -44,19 +44,18 @@ export interface ConfiguracaoLayoutProps {
 }
 
 /**
- * Aggregate root for presentation rules of a project (data-model §2.2–§2.3).
- * Implements COMP-006.
+ * Aggregate root for presentation rules of a project.
  *
- * Pure TypeScript — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript — no @nestjs/* or @prisma/client imports.
  * One instance per project (UNIQUE projeto_id in DB).
  *
- * Lazy default (D-M): `materialized=false` when not yet persisted.
+ * Lazy default: `materialized=false` when not yet persisted.
  * GetLayoutUseCase returns the default when no row is found — never 404.
  *
  * Typography bounds and heading order are enforced when `materialized=true`,
- * mirroring the CHECK constraints in data-model §2.2.
+ * mirroring the CHECK constraints in the migration.
  *
- * Layout overrides reference manuscript nodes (read-only IMP; ADR-002, D-K).
+ * Layout overrides reference manuscript nodes (read-only, owned by the import service).
  * Stale overrides (referenciaNo no longer in content tree) are excluded from
  * what PUB honours and returned separately in the preview-context response.
  */
@@ -104,7 +103,7 @@ export class ConfiguracaoLayout {
 
   /**
    * Synthesizes a default (non-materialized) placeholder for a project.
-   * Used by GetLayoutUseCase when no row is found (D-M).
+   * Used by GetLayoutUseCase when no row is found.
    */
   static createDefault(projetoId: string, empresaSlug?: string): ConfiguracaoLayout {
     return new ConfiguracaoLayout({
@@ -151,7 +150,7 @@ export class ConfiguracaoLayout {
   /**
    * Returns a copy with overrides validated against the given set of existing
    * node references. Overrides whose referenciaNo is absent are marked stale
-   * (referenciaNo no longer in the IMP content tree, D-K).
+   * (referenciaNo no longer in the IMP content tree).
    */
   withValidatedOverrides(existingNodeIds: Set<string>): ConfiguracaoLayout {
     const validated = this.overrides.map(o =>
@@ -175,7 +174,7 @@ export class ConfiguracaoLayout {
    * would produce no observable change to the persisted state, ignoring the
    * runtime-only `stale` flag.
    *
-   * Used by UpdateLayoutUseCase for idempotency (COMP-007, SPEC-05): if
+   * Used by UpdateLayoutUseCase for idempotency: if
    * equalsInput() returns true the use case skips upsert and event emission.
    *
    * @param tipografia  Subset of typography fields from the request body

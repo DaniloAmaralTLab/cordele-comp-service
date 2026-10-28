@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 
 /**
- * Payload for upserting editorial metadata (T05).
+ * Payload for upserting editorial metadata.
  *
  * Maps to PUT /api/comp/projetos/{projetoId}/metadados (api-contract §4.2).
  * capaUrl is NOT accepted here — it is managed exclusively by the cover endpoints.

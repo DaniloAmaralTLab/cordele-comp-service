@@ -4,7 +4,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
  * Single override in the preview-context response (api-contract §6.4).
  *
  * Includes a `stale` flag to inform the editor when a referenciaNo no longer
- * resolves in the current content tree (D-K). Stale overrides are returned for
+ * resolves in the current content tree. Stale overrides are returned for
  * editor awareness but excluded from the honoured set used by PUB.
  */
 export class PreviewOverrideDto {
@@ -26,7 +26,7 @@ export class PreviewOverrideDto {
 
   @ApiProperty({
     description:
-      'True when referenciaNo no longer resolves in the current manuscript content tree (D-K). ' +
+      'True when referenciaNo no longer resolves in the current manuscript content tree. ' +
       'Stale overrides are excluded from what PUB honours.',
     example: false,
   })
@@ -34,7 +34,7 @@ export class PreviewOverrideDto {
 }
 
 /**
- * Response DTO for the GET preview-context endpoint (api-contract §6.4, D-K).
+ * Response DTO for the GET preview-context endpoint (api-contract §6.4).
  *
  * Assembles the read-only manuscript content structure (via ManuscriptContentPort) +
  * ConfiguracaoLayout + overrides into a single JSON payload the SPA renders
@@ -65,7 +65,7 @@ export class PreviewContextResponseDto {
   @ApiProperty({
     description:
       'Override list including stale entries (stale=true for entries whose referenciaNo ' +
-      'is absent from the current content tree, D-K). Stale overrides excluded from PUB.',
+      'is absent from the current content tree). Stale overrides excluded from PUB.',
     type: [PreviewOverrideDto],
   })
   readonly overrides!: PreviewOverrideDto[];

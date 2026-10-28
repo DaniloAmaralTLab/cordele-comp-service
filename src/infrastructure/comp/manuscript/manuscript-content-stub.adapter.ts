@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises';
 import type { ContentTreeDto, ManuscriptContentPort } from '../../../modules/comp/ports/manuscript-content.port';
 
 /**
- * Stub adapter for ManuscriptContentPort (COMP-014 / P4).
+ * Stub adapter for ManuscriptContentPort.
  *
  * Reads a content tree fixture from disk and returns it for any projetoId
  * that is NOT listed in COMP_STUB_NO_MANUSCRIPT_IDS. When the projetoId is
@@ -18,11 +18,10 @@ import type { ContentTreeDto, ManuscriptContentPort } from '../../../modules/com
  *   COMP_STUB_NO_MANUSCRIPT_IDS        — comma-separated UUIDs that should
  *                                         resolve to null (no manuscript).
  *
- * INT-COMP-001: when IMP scaffold becomes available, swap this provider for
- * ManuscritoQueryHttpAdapter in CompModule without changing any use case.
+ * Stub used while there is no integration with the import service.
  *
- * RULE-06: lives in infrastructure/comp/manuscript (outbound client boundary). ✓
- * RULE-01/02: no @prisma/client or domain entity imports. ✓
+ * Lives in infrastructure/comp/manuscript (outbound client boundary).
+ * No @prisma/client or domain entity imports.
  */
 @Injectable()
 export class ManuscriptContentStubAdapter implements ManuscriptContentPort {

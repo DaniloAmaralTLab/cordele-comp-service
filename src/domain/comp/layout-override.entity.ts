@@ -3,22 +3,22 @@ import { DomainException } from '../shared/domain-exception';
 /**
  * OverrideTipo: supported types for a page-level override.
  *
- * The domain enum allows both values (forward-compatible, COMP-006 §Contexto).
- * The application layer (COMP-007) rejects `em-branco` at write time with 422
- * (D-H) — this domain entity rejects it too (MVP restriction matching existing
+ * The domain enum allows both values (forward-compatible).
+ * The application layer rejects `em-branco` at write time with 422
+ * — this domain entity rejects it too (MVP restriction matching existing
  * behaviour) so the enum stays forward-compatible at the DB/spec level while the
  * MVP enforces the restriction at the domain boundary.
  */
 export type OverrideTipo = 'imagem' | 'em-branco';
 
 /**
- * Alinhamento: valid alignment values for an image override (data-model §2.3).
+ * Alinhamento: valid alignment values for an image override.
  */
 export type Alinhamento = 'full' | 'centralizado' | 'junto-esquerda' | 'junto-direita';
 
 export interface LayoutOverrideProps {
   readonly id?: string;
-  /** Manuscript content tree node reference (read-only IMP node, ADR-002). */
+  /** Manuscript content tree node reference (read-only node from the import service). */
   readonly referenciaNo: string;
   readonly tipo: OverrideTipo;
   readonly alinhamento?: Alinhamento | null;
@@ -30,15 +30,15 @@ export interface LayoutOverrideProps {
 /**
  * Entity representing a page-level presentation override for a manuscript node.
  *
- * References a manuscript node via `referenciaNo` without ever mutating it
- * (ADR-002, D-K). The MVP only permits `tipo='imagem'`; `'em-branco'` is
- * reserved and rejected at construction time (D-H).
+ * References a manuscript node via `referenciaNo` without ever mutating it.
+ * The MVP only permits `tipo='imagem'`; `'em-branco'` is
+ * reserved and rejected at construction time.
  *
  * `stale=true` is set at runtime by UpdateLayoutUseCase / GetPreviewContextUseCase
  * when `referenciaNo` no longer exists in the current content tree. Stale overrides
  * are excluded from what PUB honours and flagged to the editor.
  *
- * Pure TypeScript — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript — no @nestjs/* or @prisma/client imports.
  */
 export class LayoutOverride {
   readonly id: string;
@@ -49,12 +49,12 @@ export class LayoutOverride {
   readonly stale: boolean;
 
   constructor(props: LayoutOverrideProps) {
-    // D-H: tipo='em-branco' is reserved and rejected in the MVP.
+    // tipo='em-branco' is reserved and rejected in the MVP.
     if (props.tipo === 'em-branco') {
       throw new DomainException(
         'EM_BRANCO_NAO_SUPORTADO',
         422,
-        "Override tipo='em-branco' is reserved and not supported in this version (D-H)",
+        "Override tipo='em-branco' is reserved and not supported in this version",
       );
     }
     if (props.tipo === 'imagem' && !props.alinhamento) {

@@ -6,7 +6,7 @@ import { DomainException } from '../../shared/domain-exception';
  * A text field is considered blank if it is undefined, null, empty, or contains
  * only whitespace. The validator trims before checking so `'  '` is rejected.
  *
- * Pure TypeScript — no @nestjs/* or @prisma/client imports (RULE-01/02).
+ * Pure TypeScript — no @nestjs/* or @prisma/client imports.
  */
 export class NonBlankText {
   /**

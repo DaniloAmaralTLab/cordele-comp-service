@@ -13,7 +13,7 @@ import { Reflector } from '@nestjs/core';
  * Must stay in sync with `REQUIRED_SCOPES_KEY` in
  * `src/modules/comp/decorators/require-scope.decorator.ts`.
  * Both files use the same string literal so that the guard and the decorator
- * cooperate without either importing the other (RULE-04 / RULE-05).
+ * cooperate without either importing the other.
  */
 export const REQUIRED_SCOPES_KEY = 'requiredScopes';
 
@@ -36,7 +36,6 @@ export const REQUIRED_SCOPES_KEY = 'requiredScopes';
  * class (unprotected routes — use `@Public()` to skip JwtAuthGuard entirely).
  *
  * @see src/infrastructure/comp/auth/jwt-auth.guard.ts
- * @see docs/architecture/backend/services/comp-service/spec/backend/SPEC-06-security.md
  */
 @Injectable()
 export class ScopeGuard implements CanActivate {
